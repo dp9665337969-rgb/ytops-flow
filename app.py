@@ -5,125 +5,107 @@ from googleapiclient.discovery import build
 import isodate
 
 # ---------------------------------------------------------
-# PAGE CONFIGURATION & ULTRA-HIGH CONTRAST SAAS STYLING
+# PAGE CONFIGURATION & NEXT-GEN SAAS THEME
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="PulseOps | Next-Gen YouTube Audit",
+    page_title="PulseOps | YouTube Audit & Hours Engine",
     page_icon="⚡",
     layout="wide"
 )
 
-# Custom High-Contrast Modern SaaS CSS
+# Forceful High-Contrast CSS Overrides for Both Main Area and Sidebar
 st.markdown("""
     <style>
-    /* Dark Obsidian Mesh Gradient Background */
-    .stApp {
-        background: radial-gradient(circle at 50% -10%, #111827 0%, #030712 100%);
+    /* Global Background & Base Colors */
+    .stApp, [data-testid="stSidebar"] {
+        background-color: #090D16 !important;
         color: #F9FAFB !important;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
     }
     
-    /* Neon Title Branding */
-    .neon-title {
-        font-size: 3.5rem;
+    /* Main Header Styling */
+    .app-title {
+        font-size: 2.8rem;
         font-weight: 900;
-        background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 50%, #00C6FF 100%);
+        background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-align: center;
-        margin-bottom: 0px;
-        letter-spacing: -1.5px;
-        filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.3));
+        margin-bottom: 5px;
     }
-    
-    .neon-subtitle {
-        text-align: center;
+
+    .app-subtitle {
         color: #9CA3AF !important;
-        font-size: 1.15rem;
-        font-weight: 500;
-        margin-bottom: 2rem;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
     }
 
-    /* Glassmorphism Form Card */
-    div[data-testid="stForm"] {
-        background: rgba(17, 24, 39, 0.85);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 24px;
-        padding: 2.5rem;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(16px);
-    }
-
-    /* High-Contrast Label & Inputs */
-    .stTextInput label {
-        color: #F3F4F6 !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-    }
-
-    .stTextInput input {
-        background-color: #1F2937 !important;
+    /* Force all text labels and headings to High-Contrast Pure White */
+    p, span, label, h1, h2, h3, h4, h5, h6, .stMarkdown {
         color: #FFFFFF !important;
-        border: 1.5px solid #374151 !important;
-        border-radius: 12px !important;
-        padding: 12px 16px !important;
-        font-size: 1rem !important;
-    }
-    
-    .stTextInput input::placeholder {
-        color: #6B7280 !important;
-    }
-    
-    .stTextInput input:focus {
-        border-color: #00F2FE !important;
-        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4) !important;
     }
 
-    /* Glowing Gradient Button */
-    .stButton>button {
-        background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%) !important;
-        color: #030712 !important;
-        border-radius: 12px !important;
-        font-weight: 800 !important;
-        font-size: 1.05rem !important;
-        border: none !important;
-        padding: 0.8rem 1.5rem !important;
-        box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4) !important;
-        transition: all 0.3s ease !important;
-        width: 100%;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .stButton>button:hover {
-        transform: translateY(-2px) scale(1.01) !important;
-        box-shadow: 0 8px 30px rgba(0, 242, 254, 0.7) !important;
-        color: #000000 !important;
-    }
-
-    /* Metrics High Contrast */
-    div[data-testid="stMetricValue"] {
-        font-size: 34px;
+    /* Radio buttons & text visibility fixes */
+    div[data-aria-selected="true"] {
         color: #00F2FE !important;
-        font-weight: 900;
-    }
-    
-    div[data-testid="stMetricLabel"] {
-        color: #D1D5DB !important;
     }
 
-    /* Credit Badge right below Login Box */
-    .login-credit-badge {
-        margin-top: 1.5rem;
+    /* Input & Textarea Dark High-Contrast Style */
+    .stTextInput input, .stTextArea textarea {
+        background-color: #111827 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #374151 !important;
+        border-radius: 12px !important;
+    }
+
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #00F2FE !important;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.4) !important;
+    }
+
+    /* Neon Gradient Glow Buttons */
+    .stButton>button {
+        background: linear-gradient(135deg, #00F2FE 0%, #0072FF 100%) !important;
+        color: #000000 !important;
+        border-radius: 10px !important;
+        font-weight: 800 !important;
+        border: none !important;
+        padding: 0.6rem 1.4rem !important;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3) !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+
+    .stButton>button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6) !important;
+    }
+
+    /* Metric Card Custom UI */
+    div[data-testid="stMetricValue"] {
+        font-size: 30px;
+        color: #00F2FE !important;
+        font-weight: 800;
+    }
+
+    /* Sidebar Custom Glass Card */
+    .sidebar-card {
+        background: rgba(17, 24, 39, 0.8);
+        border: 1px solid rgba(0, 242, 254, 0.2);
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 15px;
         text-align: center;
-        background: rgba(31, 41, 55, 0.6);
+    }
+
+    /* Developer Credit Badge */
+    .login-credit-badge {
+        margin-top: 1rem;
+        text-align: center;
+        background: rgba(17, 24, 39, 0.9);
         border: 1px solid rgba(0, 242, 254, 0.3);
         padding: 10px 18px;
         border-radius: 50px;
         font-size: 0.9rem;
         color: #E5E7EB;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         display: inline-block;
     }
     
@@ -132,18 +114,14 @@ st.markdown("""
         font-weight: 800;
         text-decoration: none;
     }
-    
-    .login-credit-badge a:hover {
-        text-decoration: underline;
-        color: #38BDF8;
-    }
     </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# CREDENTIALS & SESSION SYSTEM
+# ADMIN & FACULTY ACCESS CONTROL SYSTEM
 # ---------------------------------------------------------
-USER_DATABASE = {
+# Admin (You) Controls allowed faculty IDs
+ALLOWED_FACULTY = {
     "UNAC_58291": "Pass@123",
     "UNAC_10021": "Educator@2026",
     "ADMIN_OPS": "UnacademyOps#1"
@@ -155,7 +133,7 @@ if "user_id" not in st.session_state:
     st.session_state["user_id"] = ""
 
 # ---------------------------------------------------------
-# HELPER FUNCTIONS FOR YOUTUBE API
+# HELPER FUNCTIONS FOR YOUTUBE DATA API
 # ---------------------------------------------------------
 def extract_video_id(url):
     regex = r"(?:v=|\/([0-9A-Za-z_-]{11}).*|list=|\/live\/|\/shorts\/)([0-9A-Za-z_-]{11})"
@@ -166,10 +144,30 @@ def extract_playlist_id(url):
     match = re.search(r"list=([a-zA-Z0-9_-]+)", url)
     return match.group(1) if match else None
 
+def get_channel_uploads_playlist_id(api_key, channel_input):
+    """ Get the uploads playlist ID directly from channel handle or ID """
+    youtube = build('youtube', 'v3', developerKey=api_key)
+    try:
+        # Handle @username format
+        if "@" in channel_input:
+            handle = channel_input.split("@")[-1].split("/")[0]
+            req = youtube.channels().list(part="contentDetails", forHandle=handle)
+        else:
+            # Assume Direct Channel ID
+            ch_id = channel_input.split("/")[-1]
+            req = youtube.channels().list(part="contentDetails", id=ch_id)
+            
+        res = req.execute()
+        if res.get('items'):
+            return res['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+    except Exception as e:
+        st.error(f"Channel Fetch Error: {str(e)}")
+    return None
+
 def get_multiple_playlists_videos(api_key, playlist_ids):
     all_videos = []
     seen_video_ids = set()
-    fallback_thumb = "https://via.placeholder.com/120x90.png?text=No+Image"
+    fallback_thumb = "https://via.placeholder.com/120x90.png?text=YouTube"
     youtube = build('youtube', 'v3', developerKey=api_key)
 
     for p_id in playlist_ids:
@@ -208,7 +206,7 @@ def get_multiple_playlists_videos(api_key, playlist_ids):
                     v["duration"] = durations.get(v["id"], 0.0)
                     all_videos.append(v)
         except Exception as e:
-            st.error(f"Error fetching playlist ({p_id}): {str(e)}")
+            st.error(f"Error fetching source ({p_id}): {str(e)}")
 
     return all_videos
 
@@ -228,36 +226,33 @@ def get_video_durations(api_key, video_ids):
             durations[vid] = round(parsed_dur.total_seconds() / 3600.0, 2)
         return durations
     except Exception as e:
-        st.error(f"API Error: {str(e)}")
+        st.error(f"API Duration Error: {str(e)}")
         return {}
 
 # ---------------------------------------------------------
 # SCREEN 1: LOGIN PORTAL
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
-    st.markdown("<h1 class='neon-title'>⚡ PulseOps Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='neon-subtitle'>Enterprise YouTube Reconciler & Content Ops Suite</p>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;' class='app-title'>⚡ PulseOps Engine</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;' class='app-subtitle'>🔴 YouTube Enterprise Ops & Hours Audit Suite</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         with st.form("login_form"):
-            st.markdown("<h3 style='color: #FFFFFF; text-align: center; font-weight: 800;'>🔐 Operator Login</h3>", unsafe_allow_html=True)
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            st.markdown("### 🔐 Faculty / Operator Sign In")
             user_id = st.text_input("Educator / Operations ID", placeholder="e.g. UNAC_58291")
             password = st.text_input("Password", type="password", placeholder="••••••••")
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            submit = st.form_submit_button("Access Operations Suite →")
+            submit = st.form_submit_button("Access Workspace →")
             
             if submit:
-                if user_id in USER_DATABASE and USER_DATABASE[user_id] == password:
+                if user_id in ALLOWED_FACULTY and ALLOWED_FACULTY[user_id] == password:
                     st.session_state["logged_in"] = True
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("Invalid Credentials. Check Operator ID.")
+                    st.error("❌ Access Denied: Unapproved ID or Incorrect Password.")
 
-        # CREDIT PLACEMENT: EXACTLY BELOW THE LOGIN BOX
         st.markdown("""
             <div style="text-align: center;">
                 <div class="login-credit-badge">
@@ -271,44 +266,45 @@ if not st.session_state["logged_in"]:
 # ---------------------------------------------------------
 else:
     # Sidebar
-    st.sidebar.markdown("### ⚡ PulseOps Control Hub")
-    st.sidebar.write(f"Logged in as: **{st.session_state['user_id']}**")
-    st.sidebar.success("🟢 API Status: Active")
+    st.sidebar.markdown("## ⚡ PulseOps Hub")
+    st.sidebar.markdown(f"👤 Logged: **{st.session_state['user_id']}**")
     st.sidebar.markdown("---")
     
-    # Sidebar Credit
     st.sidebar.markdown("""
-        <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(0,242,254,0.2); text-align: center;">
-            <small style="color: #9CA3AF;">Engineered by</small><br>
-            <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #00F2FE; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
+        <div class="sidebar-card">
+            <span style="font-size: 20px;">🔴 📺</span><br>
+            <strong style="color: #00F2FE;">YouTube API Connected</strong><br>
+            <small style="color: #9CA3AF;">Engineered by @deepak_patil_7979</small>
         </div>
     """, unsafe_allow_html=True)
-    st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
-    if st.sidebar.button("Logout Station"):
+    if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
         st.session_state["user_id"] = ""
         st.session_state.pop("processed_df", None)
         st.session_state.pop("fetched_videos", None)
         st.rerun()
 
-    # Dashboard Header
-    st.title("📹 YouTube Hours Reconciler & Batch Auditor")
-    st.caption("Streamline video duration extraction, co-educator splits, and automated reconciliation sheets.")
+    # Main Header
+    st.markdown("<h1 class='app-title'>📹 YouTube Hours Reconciler</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='app-subtitle'>Auto-extract durations, process channel/playlist batches, and split co-educator hours effortlessly.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
-    mode = st.radio("Select Processing Mode:", ["📋 Mode A: Direct Video Links", "📺 Mode B: Batch Multi-Playlist Loader"], horizontal=True)
+    mode = st.radio("Select Ingestion Mode:", [
+        "📋 Mode A: Direct Video Links", 
+        "📺 Mode B: Playlists / Direct Channel Loader"
+    ], horizontal=True)
 
     api_key = st.secrets.get("YOUTUBE_API_KEY", "")
 
-    # MODE A
+    # MODE A: DIRECT LINKS
     if "Mode A" in mode:
-        st.subheader("Step 1: Input Direct YouTube Links")
+        st.subheader("Step 1: Input Direct Video Links")
         raw_links_text = st.text_area("Paste links below (one per line):", height=140, placeholder="https://www.youtube.com/watch?v=Ez7JwEMh8Xc\nhttps://youtu.be/abc12345")
         
         if st.button("🚀 Process Direct Links"):
             if not api_key:
-                st.error("API Key missing in Secrets.")
+                st.error("API Key missing in Streamlit Secrets!")
             elif raw_links_text.strip():
                 links = [l.strip() for l in raw_links_text.split("\n") if l.strip()]
                 v_ids = [extract_video_id(l) for l in links if extract_video_id(l)]
@@ -327,33 +323,50 @@ else:
                         })
                 st.session_state["processed_df"] = pd.DataFrame(rows)
 
-    # MODE B
+    # MODE B: MULTI-PLAYLIST & CHANNEL LOADER
     else:
-        st.subheader("Step 1: Ingest Playlist Batches")
-        playlists_text = st.text_area("Paste YouTube Playlist URLs (One per line):", height=140, placeholder="https://www.youtube.com/playlist?list=PL1q4pmfxDpc...")
+        st.subheader("Step 1: Ingest YouTube Channel URL or Playlists")
+        inputs_text = st.text_area(
+            "Paste Channel Handle (e.g. @ChannelName) or Playlist Links (One per line):",
+            height=140,
+            placeholder="https://www.youtube.com/@UnacademyNEET\nhttps://www.youtube.com/playlist?list=PL1q4pmfxDpc..."
+        )
         
-        if st.button("🔍 Fetch All Videos across Playlists"):
-            raw_p_urls = [p.strip() for p in playlists_text.split("\n") if p.strip()]
-            playlist_ids = [extract_playlist_id(p) for p in raw_p_urls if extract_playlist_id(p)]
-            
-            if not playlist_ids:
-                st.error("No valid playlist links found!")
+        if st.button("🔍 Fetch Channel / Playlist Videos"):
+            if not api_key:
+                st.error("API Key missing in Secrets!")
             else:
-                with st.spinner("Processing Playlists via YouTube Data API..."):
-                    st.session_state["fetched_videos"] = get_multiple_playlists_videos(api_key, playlist_ids)
+                lines = [line.strip() for line in inputs_text.split("\n") if line.strip()]
+                target_playlist_ids = []
+
+                for item in lines:
+                    if "list=" in item:
+                        p_id = extract_playlist_id(item)
+                        if p_id:
+                            target_playlist_ids.append(p_id)
+                    elif "@" in item or "channel" in item:
+                        ch_playlist_id = get_channel_uploads_playlist_id(api_key, item)
+                        if ch_playlist_id:
+                            target_playlist_ids.append(ch_playlist_id)
+
+                if not target_playlist_ids:
+                    st.error("No valid Channel handle (@) or Playlist URLs found!")
+                else:
+                    with st.spinner("Fetching videos from YouTube Data API..."):
+                        st.session_state["fetched_videos"] = get_multiple_playlists_videos(api_key, target_playlist_ids)
 
         if "fetched_videos" in st.session_state and st.session_state["fetched_videos"]:
             st.markdown("---")
-            st.subheader("Step 2: Filter Videos for Audit")
+            st.subheader("Step 2: Filter & Select Videos for Audit")
             videos = st.session_state["fetched_videos"]
-            st.info(f"Total Unique Videos Found: **{len(videos)}**")
+            st.info(f"Total Unique Videos Retrieved: **{len(videos)}**")
             
             selected_videos = []
             for idx, vid in enumerate(videos):
                 c1, c2, c3 = st.columns([0.4, 1, 4])
                 chk = c1.checkbox("", key=f"vid_{idx}", value=True)
                 c2.image(vid["thumbnail"], width=110)
-                c3.markdown(f"**{vid['title']}**\n\n🆔 `{vid['id']}` | ⏱️ `{vid['duration']} hrs` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid['id']})")
+                c3.markdown(f"**{vid['title']}**\n\n🆔 `{vid['id']}` | ⏱️ `{vid['duration']} hrs` | 🔗 [Watch Video](https://www.youtube.com/watch?v={vid['id']})")
                 
                 if chk:
                     selected_videos.append(vid)
@@ -373,7 +386,7 @@ else:
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
-        st.subheader("Step 3: Verification & Co-Educator Split")
+        st.subheader("Step 3: Verification & Multi-Teacher Split Table")
         
         df_to_edit = st.session_state["processed_df"].copy()
 
@@ -396,7 +409,7 @@ else:
         total_vids = len(edited_df)
         tot_hrs = edited_df["Allocated Hours"].sum()
         
-        col1.metric("Total Videos", f"{total_vids}")
+        col1.metric("Total Videos Audited", f"{total_vids}")
         col2.metric("Total Reconciled Hours", f"{tot_hrs:.2f} hrs")
         
         final_df = edited_df[["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Hours"]]
