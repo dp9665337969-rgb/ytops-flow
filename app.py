@@ -32,12 +32,12 @@ st.markdown("""
         color: #0F172A !important;
     }
 
-    /* TOP DIALOGUE BANNER */
+    /* TOP DIALOGUE BANNER (MOBILE RESPONSIVE FIXED) */
     .hero-dialogue-card {
         background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
         border: 2px solid #BFDBFE;
         border-radius: 20px;
-        padding: 20px 25px;
+        padding: 15px 20px;
         box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
         margin-bottom: 25px;
     }
@@ -45,7 +45,7 @@ st.markdown("""
     .dialogue-wrapper {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         gap: 15px;
         flex-wrap: wrap;
     }
@@ -59,15 +59,27 @@ st.markdown("""
         border-radius: 16px;
         border: 1px solid #CBD5E1;
         box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        max-width: 45%;
+        flex: 1 1 280px;
+        max-width: 100%;
+    }
+
+    /* MOBILE SPECIFIC FIXES */
+    @media (max-width: 768px) {
+        .dialogue-wrapper {
+            flex-direction: column;
+        }
+        .teacher-box {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
     }
 
     .teacher-avatar-icon {
-        font-size: 40px;
+        font-size: 32px;
         background: #F1F5F9;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -75,10 +87,11 @@ st.markdown("""
     }
 
     .dialogue-text {
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 700;
         margin: 0 !important;
-        line-height: 1.3;
+        line-height: 1.4;
+        word-break: break-word;
     }
 
     .worried-text { color: #DC2626 !important; }
@@ -86,7 +99,7 @@ st.markdown("""
 
     /* Hero Headline Styling */
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 900;
         color: #0F172A !important;
         line-height: 1.2;
@@ -103,7 +116,7 @@ st.markdown("""
 
     .hero-subtitle {
         color: #475569 !important;
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 500;
         text-align: center;
         margin-bottom: 25px;
@@ -150,19 +163,19 @@ st.markdown("""
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 16px;
-        padding: 20px;
+        padding: 18px;
         text-align: center;
         box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .badge-icon {
-        font-size: 45px;
-        margin-bottom: 8px;
+        font-size: 38px;
+        margin-bottom: 6px;
     }
 
     .badge-title {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 800;
         color: #1E293B !important;
     }
@@ -310,7 +323,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
     
-    # 1. TOP DIALOGUE BANNER
+    # 1. TOP DIALOGUE BANNER (MOBILE OPTIMIZED)
     st.markdown("""
         <div class="hero-dialogue-card">
             <div class="dialogue-wrapper">
@@ -318,7 +331,7 @@ if not st.session_state["logged_in"]:
                     <div class="teacher-avatar-icon">👨‍🏫</div>
                     <p class="dialogue-text worried-text">"Arey sir! Full padhaya, fir bhi salary me cut lag gaya!"</p>
                 </div>
-                <div style="font-size: 28px; font-weight: 900; color: #2563EB;">⚡</div>
+                <div style="font-size: 24px; font-weight: 900; color: #2563EB;">⚡</div>
                 <div class="teacher-box">
                     <div class="teacher-avatar-icon">👨‍🏫🦄</div>
                     <p class="dialogue-text smart-text">"Arey sir! ReconcileX AI use karo, zero salary cut hoga!"</p>
@@ -332,7 +345,7 @@ if not st.session_state["logged_in"]:
         <div class="hero-subtitle">10 Crore+ watch hours reconciled with 100% precision.</div>
     """, unsafe_allow_html=True)
 
-    # 2. CENTERED LOGIN WITH 2 LEFT BADGES & 2 RIGHT BADGES
+    # 2. LOGIN FORM & BADGES
     col_left, col_center, col_right = st.columns([1, 1.2, 1], gap="medium")
 
     with col_left:
@@ -397,7 +410,7 @@ else:
 
     if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
-        st.session_state["user_id"] = "deepak_patil_7979"
+        st.session_state["user_id"] = ""
         st.session_state.pop("processed_df", None)
         st.session_state.pop("fetched_videos", None)
         st.rerun()
@@ -443,9 +456,10 @@ else:
                         "User ID": st.session_state["user_id"],
                         "Video ID": vid,
                         "Cleaned YT Link": f"https://www.youtube.com/watch?v={vid}",
-                        "Duration (HH:MM:SS)": hhmmss_str,
+                        "Original Duration": hhmmss_str,
                         "Teachers Count": 1,
-                        "_raw_sec": total_sec
+                        "Allocated Duration (HH:MM:SS)": hhmmss_str,
+                        "_allocated_sec": total_sec
                     })
                 st.session_state["processed_df"] = pd.DataFrame(rows)
 
