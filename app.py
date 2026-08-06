@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 import isodate
 
 # ---------------------------------------------------------
-# PAGE CONFIGURATION & ULTRA-MODERN SAAS STYLING
+# PAGE CONFIGURATION & ULTRA-HIGH CONTRAST SAAS STYLING
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="PulseOps | Next-Gen YouTube Audit",
@@ -13,113 +13,129 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom High-End Cyber/SaaS CSS
+# Custom High-Contrast Modern SaaS CSS
 st.markdown("""
     <style>
-    /* Dark Obsidian Background with Subtle Mesh Gradient */
+    /* Dark Obsidian Mesh Gradient Background */
     .stApp {
-        background: radial-gradient(circle at 50% -20%, #1E1B4B 0%, #0F172A 60%, #020617 100%);
-        color: #F8FAFC;
-        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at 50% -10%, #111827 0%, #030712 100%);
+        color: #F9FAFB !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     
     /* Neon Title Branding */
     .neon-title {
-        font-size: 3.2rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 50%, #00C6FF 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
         margin-bottom: 0px;
-        letter-spacing: -1px;
+        letter-spacing: -1.5px;
+        filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.3));
     }
     
     .neon-subtitle {
         text-align: center;
-        color: #94A3B8;
-        font-size: 1.1rem;
+        color: #9CA3AF !important;
+        font-size: 1.15rem;
         font-weight: 500;
         margin-bottom: 2rem;
     }
 
-    /* Custom Form Card Styling */
+    /* Glassmorphism Form Card */
     div[data-testid="stForm"] {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
+        background: rgba(17, 24, 39, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 24px;
         padding: 2.5rem;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(12px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(16px);
     }
 
-    /* Input Field Fixes (Readable Dark Theme) */
+    /* High-Contrast Label & Inputs */
+    .stTextInput label {
+        color: #F3F4F6 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+
     .stTextInput input {
-        background-color: #0F172A !important;
-        color: #F8FAFC !important;
-        border: 1px solid #334155 !important;
-        border-radius: 10px !important;
+        background-color: #1F2937 !important;
+        color: #FFFFFF !important;
+        border: 1.5px solid #374151 !important;
+        border-radius: 12px !important;
         padding: 12px 16px !important;
         font-size: 1rem !important;
     }
     
+    .stTextInput input::placeholder {
+        color: #6B7280 !important;
+    }
+    
     .stTextInput input:focus {
-        border-color: #8B5CF6 !important;
-        box-shadow: 0 0 12px rgba(139, 92, 246, 0.4) !important;
+        border-color: #00F2FE !important;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4) !important;
     }
 
-    /* Glowing Gradient Buttons */
+    /* Glowing Gradient Button */
     .stButton>button {
-        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%) !important;
-        color: #FFFFFF !important;
+        background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%) !important;
+        color: #030712 !important;
         border-radius: 12px !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         font-size: 1.05rem !important;
         border: none !important;
-        padding: 0.75rem 1.5rem !important;
-        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4) !important;
+        padding: 0.8rem 1.5rem !important;
+        box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4) !important;
         transition: all 0.3s ease !important;
         width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
     .stButton>button:hover {
-        transform: translateY(-3px) scale(1.01) !important;
-        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6) !important;
-        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%) !important;
+        transform: translateY(-2px) scale(1.01) !important;
+        box-shadow: 0 8px 30px rgba(0, 242, 254, 0.7) !important;
+        color: #000000 !important;
     }
 
-    /* Metrics Styling */
+    /* Metrics High Contrast */
     div[data-testid="stMetricValue"] {
-        font-size: 32px;
-        color: #38BDF8;
-        font-weight: 800;
-    }
-
-    /* Footer Branding Credit */
-    .developer-credit {
-        position: fixed;
-        bottom: 15px;
-        right: 20px;
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        padding: 8px 16px;
-        border-radius: 30px;
-        font-size: 0.85rem;
-        color: #CBD5E1;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        z-index: 9999;
+        font-size: 34px;
+        color: #00F2FE !important;
+        font-weight: 900;
     }
     
-    .developer-credit a {
-        color: #A855F7;
-        font-weight: 700;
+    div[data-testid="stMetricLabel"] {
+        color: #D1D5DB !important;
+    }
+
+    /* Credit Badge right below Login Box */
+    .login-credit-badge {
+        margin-top: 1.5rem;
+        text-align: center;
+        background: rgba(31, 41, 55, 0.6);
+        border: 1px solid rgba(0, 242, 254, 0.3);
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        color: #E5E7EB;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        display: inline-block;
+    }
+    
+    .login-credit-badge a {
+        color: #00F2FE;
+        font-weight: 800;
         text-decoration: none;
     }
     
-    .developer-credit a:hover {
+    .login-credit-badge a:hover {
         text-decoration: underline;
-        color: #EC4899;
+        color: #38BDF8;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -219,16 +235,18 @@ def get_video_durations(api_key, video_ids):
 # SCREEN 1: LOGIN PORTAL
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
-    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     st.markdown("<h1 class='neon-title'>⚡ PulseOps Engine</h1>", unsafe_allow_html=True)
     st.markdown("<p class='neon-subtitle'>Enterprise YouTube Reconciler & Content Ops Suite</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         with st.form("login_form"):
-            st.subheader("🔐 Sign In")
+            st.markdown("<h3 style='color: #FFFFFF; text-align: center; font-weight: 800;'>🔐 Operator Login</h3>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             user_id = st.text_input("Educator / Operations ID", placeholder="e.g. UNAC_58291")
             password = st.text_input("Password", type="password", placeholder="••••••••")
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             submit = st.form_submit_button("Access Operations Suite →")
             
             if submit:
@@ -237,7 +255,16 @@ if not st.session_state["logged_in"]:
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("Invalid Credentials. Please check your Operator ID.")
+                    st.error("Invalid Credentials. Check Operator ID.")
+
+        # CREDIT PLACEMENT: EXACTLY BELOW THE LOGIN BOX
+        st.markdown("""
+            <div style="text-align: center;">
+                <div class="login-credit-badge">
+                    Crafted with ⚡ by <a href="https://instagram.com/deepak_patil_7979" target="_blank">@deepak_patil_7979</a>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # SCREEN 2: MAIN DASHBOARD
@@ -246,8 +273,18 @@ else:
     # Sidebar
     st.sidebar.markdown("### ⚡ PulseOps Control Hub")
     st.sidebar.write(f"Logged in as: **{st.session_state['user_id']}**")
-    st.sidebar.success("🟢 API Status: Connected")
+    st.sidebar.success("🟢 API Status: Active")
     st.sidebar.markdown("---")
+    
+    # Sidebar Credit
+    st.sidebar.markdown("""
+        <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(0,242,254,0.2); text-align: center;">
+            <small style="color: #9CA3AF;">Engineered by</small><br>
+            <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #00F2FE; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
+        </div>
+    """, unsafe_allow_html=True)
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
+
     if st.sidebar.button("Logout Station"):
         st.session_state["logged_in"] = False
         st.session_state["user_id"] = ""
@@ -368,12 +405,3 @@ else:
         
         csv_data = export_df.to_csv(index=False).encode('utf-8')
         st.download_button("📥 Export CSV Audit Sheet", data=csv_data, file_name=f"YT_Audit_{st.session_state['user_id']}.csv", mime="text/csv")
-
-# ---------------------------------------------------------
-# FOOTER CREDIT BADGE
-# ---------------------------------------------------------
-st.markdown("""
-    <div class="developer-credit">
-        Crafted with ⚡ by <a href="https://instagram.com/deepak_patil_7979" target="_blank">@deepak_patil_7979</a>
-    </div>
-""", unsafe_allow_html=True)
