@@ -39,16 +39,16 @@ st.markdown("""
 # ---------------------------------------------------------
 # DUMMY CREDENTIALS DATABASE & SESSION SYSTEM
 # ---------------------------------------------------------
-# Educator ID : Password
 USER_DATABASE = {
     "UNAC_58291": "Pass@123",
     "UNAC_10021": "Educator@2026",
     "ADMIN_OPS": "UnacademyOps#1"
 }
 
-if "logged_in" not in st_state:
+# FIX APPLIED HERE: Used st.session_state instead of st_state
+if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
-if "user_id" not in st_state:
+if "user_id" not in st.session_state:
     st.session_state["user_id"] = ""
 
 # ---------------------------------------------------------
