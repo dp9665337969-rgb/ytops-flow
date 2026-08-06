@@ -6,118 +6,153 @@ from googleapiclient.discovery import build
 import isodate
 
 # ---------------------------------------------------------
-# PAGE CONFIGURATION & NEXT-GEN SAAS THEME
+# PAGE CONFIGURATION & ULTRA-HIGH END SAAS THEME
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="PulseOps | YouTube Enterprise Audit Hub",
-    page_icon="🔴",
+    page_title="PulseOps | Ultra Enterprise Hub",
+    page_icon="⚡",
     layout="wide"
 )
 
-# Advanced High-Contrast SaaS UI CSS with YouTube Branding
+# Deep Luxury SaaS CSS Styling
 st.markdown("""
     <style>
-    /* Global Theme Overrides */
+    /* Global Base */
     .stApp, [data-testid="stSidebar"] {
-        background: radial-gradient(circle at 50% 0%, #0F172A 0%, #020617 100%) !important;
-        color: #F8FAFC !important;
-        font-family: 'Inter', system-ui, sans-serif;
+        background: #090D16 !important;
+        color: #F1F5F9 !important;
+        font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     }
     
-    /* Typography High Contrast */
+    /* Hide Streamlit Header Elements */
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+
+    /* Typography */
     h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
         color: #F8FAFC !important;
     }
 
-    /* Gradient Brand Header */
+    /* Premium Neon Brand Header */
     .brand-header {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         font-weight: 900;
-        background: linear-gradient(135deg, #FF0000 0%, #FF5252 50%, #00F2FE 100%);
+        background: linear-gradient(135deg, #FF1E27 0%, #FF5252 50%, #38BDF8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        letter-spacing: -1px;
+        letter-spacing: -1.2px;
+        margin-bottom: 0px;
     }
 
     .brand-subheader {
         color: #94A3B8 !important;
         font-size: 1.05rem;
         font-weight: 400;
+        margin-bottom: 25px;
     }
 
     /* Glassmorphism Input Cards */
     .stTextInput input, .stTextArea textarea {
-        background-color: #1E293B !important;
+        background-color: #111827 !important;
         color: #FFFFFF !important;
-        border: 1px solid #334155 !important;
-        border-radius: 12px !important;
-        padding: 12px !important;
+        border: 1px solid #1F2937 !important;
+        border-radius: 14px !important;
+        padding: 14px !important;
+        font-size: 0.95rem;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #FF0000 !important;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.3) !important;
+        border-color: #FF1E27 !important;
+        box-shadow: 0 0 18px rgba(255, 30, 39, 0.35) !important;
     }
 
-    /* Action Buttons with YouTube Red Glow */
+    /* Primary Buttons */
     .stButton>button {
-        background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%) !important;
+        background: linear-gradient(135deg, #FF1E27 0%, #D90429 100%) !important;
         color: #FFFFFF !important;
         border-radius: 12px !important;
         font-weight: 800 !important;
         border: none !important;
-        padding: 0.7rem 1.5rem !important;
-        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4) !important;
-        transition: all 0.3s ease !important;
+        padding: 0.75rem 1.6rem !important;
+        box-shadow: 0 4px 22px rgba(255, 30, 39, 0.45) !important;
+        transition: all 0.25s ease-in-out !important;
         width: 100%;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
     }
 
     .stButton>button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 25px rgba(255, 0, 0, 0.7) !important;
+        box-shadow: 0 8px 30px rgba(255, 30, 39, 0.75) !important;
     }
 
-    /* Metrics Cards */
-    div[data-testid="stMetricValue"] {
-        font-size: 32px;
-        color: #38BDF8 !important;
-        font-weight: 900;
+    /* Sidebar Styling & Creator Badge */
+    [data-testid="stSidebar"] {
+        border-right: 1px solid #1E293B !important;
+        padding-top: 2rem;
     }
-    
+
+    .sidebar-creator-card {
+        background: linear-gradient(145deg, #111827 0%, #0F172A 100%);
+        border: 1px solid #1E293B;
+        border-left: 4px solid #38BDF8;
+        padding: 16px;
+        border-radius: 14px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar-creator-card .label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #64748B;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .sidebar-creator-card .creator-name {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #38BDF8;
+        text-decoration: none;
+    }
+    .sidebar-creator-card .creator-name:hover {
+        color: #7DD3FC;
+        text-decoration: underline;
+    }
+
+    /* Custom Metric Cards */
+    div[data-testid="stMetricValue"] {
+        font-size: 34px !important;
+        color: #38BDF8 !important;
+        font-weight: 900 !important;
+    }
+
     div[data-testid="stMetricLabel"] {
         color: #94A3B8 !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
     }
 
-    /* Sidebar Badge */
-    .sidebar-brand-card {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 0, 0, 0.3);
-        padding: 15px;
-        border-radius: 16px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        margin-bottom: 20px;
+    /* Radio Tabs Styling */
+    div[role="radiogroup"] {
+        background: #111827;
+        padding: 6px;
+        border-radius: 14px;
+        border: 1px solid #1F2937;
+        gap: 10px;
     }
 
-    /* Credit Badge */
-    .credit-badge {
-        margin-top: 2rem;
-        text-align: center;
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        padding: 10px 20px;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        color: #E2E8F0;
-        display: inline-block;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    .credit-badge a {
-        color: #38BDF8;
-        font-weight: 700;
-        text-decoration: none;
+    /* Login Form Box */
+    .login-box {
+        background: #111827;
+        border: 1px solid #1F2937;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -137,10 +172,9 @@ if "user_id" not in st.session_state:
     st.session_state["user_id"] = ""
 
 # ---------------------------------------------------------
-# HELPER FUNCTIONS FOR DURATION & API
+# HELPER FUNCTIONS
 # ---------------------------------------------------------
 def seconds_to_hhmmss(seconds):
-    """ Converts total seconds to exact HH:MM:SS format """
     hours = int(seconds // 3600)
     minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)
@@ -180,8 +214,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
     
     try:
         next_page_token = None
-        
-        while len(all_videos) < 100: # Limit loop iterations for performance
+        while len(all_videos) < 100:
             request = youtube.playlistItems().list(
                 part="snippet,contentDetails",
                 playlistId=playlist_id,
@@ -223,7 +256,6 @@ def fetch_videos_last_45_days(api_key, playlist_id):
                 v_ids.append(v_id)
 
             if v_ids:
-                # Direct API call to fetch actual durations
                 details = youtube.videos().list(
                     part="contentDetails",
                     id=",".join(v_ids)
@@ -240,8 +272,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
                     vid_id = item["id"]
                     total_sec = durations_map.get(vid_id, 0)
                     
-                    # Filter Shorts (<60s)
-                    if total_sec >= 60:
+                    if total_sec >= 60: # Filter Shorts (<60s)
                         item["duration_hhmmss"] = seconds_to_hhmmss(total_sec)
                         item["raw_seconds"] = total_sec
                         all_videos.append(item)
@@ -259,14 +290,14 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 # SCREEN 1: LOGIN PORTAL
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
-    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center;' class='brand-header'>🔴 PulseOps Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;' class='brand-subheader'>Secure YouTube Content Operations Suite</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;' class='brand-subheader'>Enterprise YouTube Verification & Operations Suite</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         with st.form("login_form"):
-            st.markdown("<h3 style='text-align: center; color: #FFFFFF;'>🔐 Authorized Faculty Sign In</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; font-weight: 800;'>🔐 Authorized Sign In</h3>", unsafe_allow_html=True)
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             user_id = st.text_input("Educator / Admin ID", placeholder="e.g. UNAC_58291")
             password = st.text_input("Password", type="password", placeholder="••••••••")
@@ -279,13 +310,12 @@ if not st.session_state["logged_in"]:
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("❌ Authentication Failed: Unrecognized ID or Password.")
+                    st.error("❌ Authentication Failed: Invalid Credentials.")
 
         st.markdown("""
-            <div style="text-align: center;">
-                <div class="credit-badge">
-                    Engineered with ⚡ by <a href="https://instagram.com/deepak_patil_7979" target="_blank">@deepak_patil_7979</a>
-                </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <span style="color: #64748B; font-size: 0.85rem;">Engineered by</span> 
+                <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
             </div>
         """, unsafe_allow_html=True)
 
@@ -294,15 +324,16 @@ if not st.session_state["logged_in"]:
 # ---------------------------------------------------------
 else:
     # Sidebar
-    st.sidebar.markdown("### 🔴 PulseOps Control")
-    st.sidebar.markdown(f"👤 Operator: **{st.session_state['user_id']}**")
-    st.sidebar.markdown("---")
+    st.sidebar.markdown("## 🔴 PulseOps Hub")
+    st.sidebar.markdown(f"👤 Active Operator: **{st.session_state['user_id']}**")
     
+    # Creator Badge in Sidebar (Requested Fix)
     st.sidebar.markdown("""
-        <div class="sidebar-brand-card">
-            <span style="font-size: 24px;">📺🔴</span><br>
-            <strong style="color: #38BDF8;">Format: HH:MM:SS</strong><br>
-            <small style="color: #94A3B8;">Clean Audit Enabled</small>
+        <div class="sidebar-creator-card">
+            <div class="label">Platform Developer</div>
+            <a class="creator-name" href="https://instagram.com/deepak_patil_7979" target="_blank">
+                ⚡ Created by @deepak_patil_7979
+            </a>
         </div>
     """, unsafe_allow_html=True)
 
@@ -314,9 +345,8 @@ else:
         st.rerun()
 
     # Main Header
-    st.markdown("<h1 class='brand-header'>📹 YouTube Audit & Reconciliation Hub</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='brand-subheader'>Extract videos & live streams from last 45 days, manage co-educator splits, and export clean HH:MM:SS Excel sheets.</p>", unsafe_allow_html=True)
-    st.markdown("---")
+    st.markdown("<h1 class='brand-header'>📹 YouTube Audit & Reconciliation</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='brand-subheader'>Extract long-form content, perform split calculations, and export verified HH:MM:SS sheets.</p>", unsafe_allow_html=True)
 
     mode = st.radio("Select Workflow Mode:", [
         "📋 Mode A: Direct Video Links", 
@@ -347,7 +377,7 @@ else:
                     total_sec = isodate.parse_duration(iso_dur).total_seconds()
                     
                     if total_sec < 60:
-                        continue # Skip shorts
+                        continue
                         
                     hhmmss_str = seconds_to_hhmmss(total_sec)
                     
@@ -365,8 +395,8 @@ else:
     else:
         st.subheader("Step 1: Ingest Channel Handle or Playlist URL")
         channel_input = st.text_input(
-            "Enter YouTube Channel Handle (e.g. @UnacademyNEET) or Playlist URL:",
-            placeholder="https://www.youtube.com/@UnacademyNEET"
+            "Enter YouTube Channel Handle or Playlist URL:",
+            placeholder="e.g. https://www.youtube.com/@UnacademyNEET"
         )
         
         if st.button("🔍 Fetch Last 45 Days Videos & Lives"):
@@ -396,8 +426,10 @@ else:
             selected_videos = []
             for idx, vid in enumerate(videos):
                 c1, c2, c3 = st.columns([0.3, 1.2, 4])
-                chk = c1.checkbox("", key=f"vid_{idx}", value=True)
-                c2.image(vid.get("thumbnail", ""), width=100)
+                
+                # FIX: Default unchecked (value=False) as requested
+                chk = c1.checkbox("", key=f"vid_{idx}", value=False)
+                c2.image(vid.get("thumbnail", ""), width=110)
                 
                 duration_display = vid.get("duration_hhmmss", "00:00:00")
                 c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
@@ -406,17 +438,20 @@ else:
                     selected_videos.append(vid)
 
             if st.button("✅ Confirm Selection & Build Audit Sheet"):
-                rows = []
-                for sv in selected_videos:
-                    rows.append({
-                        "Educator ID": st.session_state["user_id"],
-                        "Video ID": sv.get('id'),
-                        "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
-                        "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
-                        "Teachers Count": 1,
-                        "_raw_sec": sv.get("raw_seconds", 0)
-                    })
-                st.session_state["processed_df"] = pd.DataFrame(rows)
+                if not selected_videos:
+                    st.warning("Pehle kam se kam ek video select karo!")
+                else:
+                    rows = []
+                    for sv in selected_videos:
+                        rows.append({
+                            "Educator ID": st.session_state["user_id"],
+                            "Video ID": sv.get('id'),
+                            "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
+                            "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
+                            "Teachers Count": 1,
+                            "_raw_sec": sv.get("raw_seconds", 0)
+                        })
+                    st.session_state["processed_df"] = pd.DataFrame(rows)
 
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
