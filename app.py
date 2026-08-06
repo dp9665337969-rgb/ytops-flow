@@ -177,7 +177,6 @@ def fetch_videos_last_45_days(api_key, playlist_id):
     all_videos = []
     seen_ids = set()
     
-    # 45 Days Threshold Calculation
     cutoff_date = datetime.now(timezone.utc) - timedelta(days=45)
     
     try:
@@ -188,7 +187,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
         )
         response = request.execute()
         
-        temp_vids = []
+        temp_dict = {}
         v_ids = []
         
         for item in response.get('items', []):
@@ -203,7 +202,6 @@ def fetch_videos_last_45_days(api_key, playlist_id):
             if title in ["Private video", "Deleted video"]:
                 continue
                 
-            # Filter publish date (Last 45 days)
             published_at_str = snippet.get('publishedAt')
             if published_at_str:
                 pub_date = datetime.fromisoformat(published_at_str.replace("Z", "+00:00"))
@@ -214,15 +212,14 @@ def fetch_videos_last_45_days(api_key, playlist_id):
             thumbnails = snippet.get('thumbnails', {})
             thumb_url = thumbnails.get('medium', {}).get('url') or thumbnails.get('default', {}).get('url', '')
             
-            temp_vids.append({
+            temp_dict[v_id] = {
                 "id": v_id,
                 "title": title,
                 "thumbnail": thumb_url
-            })
+            }
             v_ids.append(v_id)
 
         if v_ids:
-            # Fetch Durations & filter out Shorts (<60s)
             details = youtube.videos().list(
                 part="contentDetails,snippet",
                 id=",".join(v_ids)
@@ -234,18 +231,17 @@ def fetch_videos_last_45_days(api_key, playlist_id):
                 parsed_dur = isodate.parse_duration(iso_dur)
                 total_seconds = parsed_dur.total_seconds()
                 
-                # Exclude Shorts (under 60 seconds)
+                # Exclude Shorts (< 60s)
                 if total_seconds < 60:
                     continue
                     
                 hhmmss_str = seconds_to_hhmmss(total_seconds)
                 
-                for tv in temp_vids:
-                    if tv["id"] == vid:
-                        tv["duration_hhmmss"] = hhmmss_str
-                        tv["raw_seconds"] = total_seconds
-                        all_videos.append(tv)
-                        break
+                if vid in temp_dict:
+                    vid_info = temp_dict[vid]
+                    vid_info["duration_hhmmss"] = hhmmss_str
+                    vid_info["raw_seconds"] = total_seconds
+                    all_videos.append(vid_info)
 
     except Exception as e:
         st.error(f"API Error: {str(e)}")
@@ -397,8 +393,10 @@ else:
             for idx, vid in enumerate(videos):
                 c1, c2, c3 = st.columns([0.3, 1.2, 4])
                 chk = c1.checkbox("", key=f"vid_{idx}", value=True)
-                c2.image(vid["thumbnail"], width=100)
-                c3.markdown(f"**{vid['title']}**\n\n⏱️ Duration: `{vid['duration_hhmmss']}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid['id']})")
+                c2.image(vid.get("thumbnail", ""), width=100)
+                
+                duration_display = vid.get("duration_hhmmss", "00:00:00")
+                c3.markdown(f"**{vid.get('title', 'Untitled')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
                 
                 if chk:
                     selected_videos.append(vid)
@@ -408,12 +406,12 @@ else:
                 for sv in selected_videos:
                     rows.append({
                         "Educator ID": st.session_state["user_id"],
-                        "Video ID": sv['id'],
-                        "Video Title": sv['title'],
-                        "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv['id']}",
-                        "Duration (HH:MM:SS)": sv["duration_hhmmss"],
+                        "Video ID": sv.get('id'),
+                        "Video Title": sv.get('title'),
+                        "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
+                        "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
                         "Teachers Count": 1,
-                        "_raw_sec": sv["raw_seconds"]
+                        "_raw_sec": sv.get("raw_seconds", 0)
                     })
                 st.session_state["processed_df"] = pd.DataFrame(rows)
 
@@ -438,7 +436,6 @@ else:
             use_container_width=True
         )
         
-        # Calculate split per teacher in HH:MM:SS
         split_durations = []
         tot_seconds = 0
         
