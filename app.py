@@ -406,10 +406,11 @@ else:
                     st.error("Could not resolve channel uploads or playlist ID!")
                 else:
                     with st.spinner("Scanning YouTube Data API (Filtering Shorts & >45 Days items)..."):
-                        # Clear old selections on new fetch
+                        # Clear old state completely
                         for k in list(st.session_state.keys()):
                             if k.startswith("chk_"):
                                 del st.session_state[k]
+                        st.session_state.pop("processed_df", None)
                         st.session_state["fetched_videos"] = fetch_videos_last_45_days(api_key, target_playlist_id)
 
         if "fetched_videos" in st.session_state and st.session_state["fetched_videos"]:
@@ -418,28 +419,33 @@ else:
             videos = st.session_state["fetched_videos"]
             st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items to include:")
             
-            selected_videos = []
-            for idx, vid in enumerate(videos):
-                c1, c2, c3 = st.columns([0.3, 1.2, 4])
-                
-                # Dynamic key + Default FALSE Guarantee
-                chk_key = f"chk_{vid.get('id')}_{idx}"
-                chk = c1.checkbox("", key=chk_key, value=False)
-                
-                c2.image(vid.get("thumbnail", ""), width=110)
-                
-                duration_display = vid.get("duration_hhmmss", "00:00:00")
-                c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
-                
-                if chk:
-                    selected_videos.append(vid)
+            # Form to prevent auto-refreshing state mid-selection
+            with st.form("video_selection_form"):
+                selected_indices = []
+                for idx, vid in enumerate(videos):
+                    c1, c2, c3 = st.columns([0.3, 1.2, 4])
+                    
+                    chk_key = f"chk_{vid.get('id')}_{idx}"
+                    chk = c1.checkbox("", key=chk_key, value=False)
+                    
+                    c2.image(vid.get("thumbnail", ""), width=110)
+                    
+                    duration_display = vid.get("duration_hhmmss", "00:00:00")
+                    c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
+                    
+                    if chk:
+                        selected_indices.append(idx)
 
-            if st.button("✅ Confirm Selection & Build Audit Sheet"):
-                if not selected_videos:
-                    st.warning("Pehle kam se kam ek video select karo!")
+                confirm_submit = st.form_submit_button("✅ Confirm Selected Videos & Build Audit Sheet")
+
+            if confirm_submit:
+                if not selected_indices:
+                    st.warning("⚠️ Pehle kam se kam ek video select karo!")
+                    st.session_state.pop("processed_df", None)
                 else:
                     rows = []
-                    for sv in selected_videos:
+                    for s_idx in selected_indices:
+                        sv = videos[s_idx]
                         rows.append({
                             "Educator ID": st.session_state["user_id"],
                             "Video ID": sv.get('id'),
@@ -449,6 +455,7 @@ else:
                             "_raw_sec": sv.get("raw_seconds", 0)
                         })
                     st.session_state["processed_df"] = pd.DataFrame(rows)
+                    st.success(f"Success! {len(selected_indices)} videos loaded into Step 3.")
 
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
