@@ -145,15 +145,6 @@ st.markdown("""
         border: 1px solid #1F2937;
         gap: 10px;
     }
-
-    /* Login Form Box */
-    .login-box {
-        background: #111827;
-        border: 1px solid #1F2937;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -327,7 +318,7 @@ else:
     st.sidebar.markdown("## 🔴 PulseOps Hub")
     st.sidebar.markdown(f"👤 Active Operator: **{st.session_state['user_id']}**")
     
-    # Creator Badge in Sidebar (Requested Fix)
+    # Creator Badge in Sidebar
     st.sidebar.markdown("""
         <div class="sidebar-creator-card">
             <div class="label">Platform Developer</div>
@@ -415,6 +406,10 @@ else:
                     st.error("Could not resolve channel uploads or playlist ID!")
                 else:
                     with st.spinner("Scanning YouTube Data API (Filtering Shorts & >45 Days items)..."):
+                        # Clear old selections on new fetch
+                        for k in list(st.session_state.keys()):
+                            if k.startswith("chk_"):
+                                del st.session_state[k]
                         st.session_state["fetched_videos"] = fetch_videos_last_45_days(api_key, target_playlist_id)
 
         if "fetched_videos" in st.session_state and st.session_state["fetched_videos"]:
@@ -427,8 +422,10 @@ else:
             for idx, vid in enumerate(videos):
                 c1, c2, c3 = st.columns([0.3, 1.2, 4])
                 
-                # FIX: Default unchecked (value=False) as requested
-                chk = c1.checkbox("", key=f"vid_{idx}", value=False)
+                # Dynamic key + Default FALSE Guarantee
+                chk_key = f"chk_{vid.get('id')}_{idx}"
+                chk = c1.checkbox("", key=chk_key, value=False)
+                
                 c2.image(vid.get("thumbnail", ""), width=110)
                 
                 duration_display = vid.get("duration_hhmmss", "00:00:00")
