@@ -32,14 +32,67 @@ st.markdown("""
         color: #0F172A !important;
     }
 
+    /* TOP DIALOGUE BANNER */
+    .hero-dialogue-card {
+        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        border: 2px solid #BFDBFE;
+        border-radius: 20px;
+        padding: 20px 25px;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+        margin-bottom: 25px;
+    }
+
+    .dialogue-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .teacher-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #FFFFFF;
+        padding: 12px 18px;
+        border-radius: 16px;
+        border: 1px solid #CBD5E1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        max-width: 45%;
+    }
+
+    .teacher-avatar-icon {
+        font-size: 40px;
+        background: #F1F5F9;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .dialogue-text {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0 !important;
+        line-height: 1.3;
+    }
+
+    .worried-text { color: #DC2626 !important; }
+    .smart-text { color: #1E40AF !important; }
+
     /* Hero Headline Styling */
     .hero-title {
-        font-size: 3.2rem;
+        font-size: 2.2rem;
         font-weight: 900;
         color: #0F172A !important;
-        line-height: 1.15;
-        letter-spacing: -1.5px;
-        margin-bottom: 12px;
+        line-height: 1.2;
+        letter-spacing: -1px;
+        text-align: center;
+        margin-bottom: 8px;
     }
 
     .hero-title span {
@@ -50,14 +103,10 @@ st.markdown("""
 
     .hero-subtitle {
         color: #475569 !important;
-        font-size: 1.15rem;
+        font-size: 1rem;
         font-weight: 500;
+        text-align: center;
         margin-bottom: 25px;
-    }
-
-    .highlight-badge {
-        color: #2563EB !important;
-        font-weight: 800;
     }
 
     /* Input Box Styling */
@@ -66,19 +115,12 @@ st.markdown("""
         color: #0F172A !important;
         border: 2px solid #E2E8F0 !important;
         border-radius: 12px !important;
-        padding: 14px 16px !important;
-        font-size: 1rem !important;
+        padding: 12px 14px !important;
+        font-size: 0.95rem !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }
 
-    .stTextInput input:focus {
-        border-color: #2563EB !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
-    }
-
-    /* ---------------------------------------------------------
-       FIXED BUTTON STYLING (PURE WHITE TEXT ON ALL BUTTONS)
-       --------------------------------------------------------- */
+    /* PURE WHITE TEXT FOR ALL BUTTONS */
     .stButton>button, .stDownloadButton>button {
         background: #1E293B !important;
         color: #FFFFFF !important;
@@ -92,7 +134,6 @@ st.markdown("""
         width: 100%;
     }
 
-    /* Target inner text, p, and span tags inside buttons to force pure white */
     .stButton>button *, .stDownloadButton>button * {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
@@ -102,107 +143,28 @@ st.markdown("""
     .stButton>button:hover, .stDownloadButton>button:hover {
         background: #0F172A !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 14px 24px -5px rgba(15, 23, 42, 0.4) !important;
     }
 
-    /* Hero Right Section Custom Graphics */
-    .illustration-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        padding: 20px;
-    }
-
-    .avatar-circle-main {
-        width: 220px;
-        height: 220px;
-        background: linear-gradient(135deg, #BAE6FD 0%, #38BDF8 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 80px;
-        box-shadow: 0 20px 40px rgba(56, 189, 248, 0.25);
-    }
-
-    .avatar-circle-secondary {
-        width: 160px;
-        height: 160px;
-        background: linear-gradient(135deg, #FEF08A 0%, #FACC15 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 60px;
-        box-shadow: 0 15px 30px rgba(250, 204, 21, 0.25);
-    }
-
-    .avatar-circle-tertiary {
-        width: 170px;
-        height: 170px;
-        background: linear-gradient(135deg, #DDD6FE 0%, #A855F7 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 65px;
-        box-shadow: 0 15px 30px rgba(168, 85, 247, 0.25);
-    }
-
-    .floating-badge-1 {
+    /* BADGE CARDS ON LEFT AND RIGHT OF LOGIN */
+    .badge-card {
         background: #FFFFFF;
-        color: #2563EB;
-        font-weight: 800;
-        padding: 8px 16px;
-        border-radius: 30px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         border: 1px solid #E2E8F0;
-        font-size: 0.9rem;
-    }
-
-    /* Teacher Cartoon Dialogue Card on Dashboard */
-    .teacher-dialogue-card {
-        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-        border: 2px solid #BFDBFE;
-        border-radius: 20px;
-        padding: 20px 25px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
-        margin-bottom: 30px;
-    }
-
-    .teacher-avatar {
-        font-size: 55px;
-        background: #FFFFFF;
-        border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-        border: 2px solid #3B82F6;
-        flex-shrink: 0;
-    }
-
-    .speech-bubble {
-        background: #FFFFFF;
         border-radius: 16px;
-        padding: 14px 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #E2E8F0;
-        position: relative;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        margin-bottom: 20px;
     }
 
-    .speech-bubble p {
-        margin: 0 !important;
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1E3A8A !important;
-        line-height: 1.4;
+    .badge-icon {
+        font-size: 45px;
+        margin-bottom: 8px;
+    }
+
+    .badge-title {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #1E293B !important;
     }
 
     div[data-testid="stMetricValue"] {
@@ -347,32 +309,56 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 # SCREEN 1: RECONCILEX AI LANDING HERO PAGE
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     
-    col_left, col_right = st.columns([1.1, 0.9], gap="large")
+    # 1. TOP DIALOGUE BANNER (CRISP & SHORT UNDER 10 WORDS)
+    st.markdown("""
+        <div class="hero-dialogue-card">
+            <div class="dialogue-wrapper">
+                <div class="teacher-box">
+                    <div class="teacher-avatar-icon">👨‍🏫</div>
+                    <p class="dialogue-text worried-text">"Arey sir! Full padhaya, fir bhi salary me cut lag gaya!"</p>
+                </div>
+                <div style="font-size: 28px; font-weight: 900; color: #2563EB;">⚡</div>
+                <div class="teacher-box">
+                    <div class="teacher-avatar-icon">👨‍🏫🦄</div>
+                    <p class="dialogue-text smart-text">"Arey sir! ReconcileX AI use karo, zero salary cut hoga!"</p>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <div class="hero-title">Automate content audit with <span>ReconcileX AI</span></div>
+        <div class="hero-subtitle">10 Crore+ watch hours reconciled with 100% precision.</div>
+    """, unsafe_allow_html=True)
+
+    # 2. CENTERED LOGIN WITH 2 LEFT BADGES & 2 RIGHT BADGES
+    col_left, col_center, col_right = st.columns([1, 1.2, 1], gap="medium")
 
     with col_left:
         st.markdown("""
-            <div class="hero-title">
-                Automate your content audit with <span>ReconcileX AI</span>
+            <div class="badge-card">
+                <div class="badge-icon">⚡</div>
+                <div class="badge-title">Automated Audits</div>
             </div>
-            <p class="hero-subtitle">
-                Over <span class="highlight-badge">10 Crore+</span> watch hours processed with intelligent multi-host reconciliation.
-            </p>
+            <div class="badge-card">
+                <div class="badge-icon">📊</div>
+                <div class="badge-title">Multi-Host Split Engine</div>
+            </div>
         """, unsafe_allow_html=True)
 
+    with col_center:
         with st.form("hero_login_form"):
+            st.markdown("<h3 style='text-align: center; margin-bottom: 15px;'>Portal Login</h3>", unsafe_allow_html=True)
             user_id = st.text_input(
-                "Mobile Number or Access ID", 
-                placeholder="🇮🇳  +91  Enter your mobile or ID"
+                "Mobile Number / Access ID", 
+                placeholder="UNAC_58291"
             )
             password = st.text_input(
-                "Security Passkey", 
+                "Passkey", 
                 type="password", 
-                placeholder="Enter access key"
+                placeholder="Enter key"
             )
-            
-            st.markdown("<p style='font-size: 0.82rem; color: #64748B; margin-top: -5px;'>Instant authentication for operations & content leaders</p>", unsafe_allow_html=True)
             
             submit_btn = st.form_submit_button("Access Portal →")
 
@@ -382,41 +368,19 @@ if not st.session_state["logged_in"]:
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("❌ Verification Failed: Invalid ID or Key.")
+                    st.error("❌ Invalid Credentials")
 
     with col_right:
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("""
-                <div class="illustration-container">
-                    <div class="avatar-circle-main">👨‍🏫</div>
-                </div>
-                <div style="text-align: center; margin-top: -10px;">
-                    <span class="floating-badge-1">⚡ Automated Audits</span>
-                </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-            
-            st.markdown("""
-                <div class="illustration-container">
-                    <div class="avatar-circle-secondary">👩‍💻</div>
-                </div>
-                <div style="text-align: center; margin-top: -10px;">
-                    <span class="floating-badge-1">📊 Multi-Host Split</span>
-                </div>
-            """, unsafe_allow_html=True)
-
-        with c2:
-            st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
-            st.markdown("""
-                <div class="illustration-container">
-                    <div class="avatar-circle-tertiary">🎓</div>
-                </div>
-                <div style="text-align: center; margin-top: -10px;">
-                    <span class="floating-badge-1">🌟 100% Verified Metadata</span>
-                </div>
-            """, unsafe_allow_html=True)
+        st.markdown("""
+            <div class="badge-card">
+                <div class="badge-icon">🌟</div>
+                <div class="badge-title">100% Verified Metadata</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">🛡️</div>
+                <div class="badge-title">Zero Salary Cut Guarantee</div>
+            </div>
+        """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # SCREEN 2: MAIN DASHBOARD INTERFACE
@@ -432,16 +396,6 @@ else:
         st.session_state.pop("processed_df", None)
         st.session_state.pop("fetched_videos", None)
         st.rerun()
-
-    # CARTOON TEACHER DIALOGUE BANNER
-    st.markdown("""
-        <div class="teacher-dialogue-card">
-            <div class="teacher-avatar">👨‍🏫</div>
-            <div class="speech-bubble">
-                <p>🦄 "Chinta mat karo, iss baar salary bilkul nahi kategi! ReconcileX AI se saare teaching hours ekdam 100% accuracy ke saath count ho gaye hain!" ✨</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
 
     # Main Header
     st.markdown("<h1 style='font-size: 2.2rem; font-weight: 800; color: #0F172A;'>📹 ReconcileX Content Engine</h1>", unsafe_allow_html=True)
@@ -522,14 +476,16 @@ else:
 
         if "fetched_videos" in st.session_state and st.session_state["fetched_videos"]:
             st.markdown("---")
-            st.subheader("Step 2: Select Videos for Audit")
+            st.subheader("Step 2: Select Videos & Set Educator Count")
             videos = st.session_state["fetched_videos"]
-            st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items to include:")
+            st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items and set educator count:")
             
             with st.form("video_selection_form"):
                 selected_indices = []
+                educator_counts = {}
+
                 for idx, vid in enumerate(videos):
-                    c1, c2, c3 = st.columns([0.3, 1.2, 4])
+                    c1, c2, c3, c4 = st.columns([0.3, 1.2, 3.2, 1.3])
                     
                     chk_key = f"chk_{vid.get('id')}_{idx}"
                     chk = c1.checkbox("", key=chk_key, value=False)
@@ -539,8 +495,18 @@ else:
                     duration_display = vid.get("duration_hhmmss", "00:00:00")
                     c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
                     
+                    # Educator Count Selection Box (Defaults to 1)
+                    t_count = c4.number_input(
+                        "Educators Count", 
+                        min_value=1, 
+                        max_value=10, 
+                        value=1, 
+                        key=f"num_{vid.get('id')}_{idx}"
+                    )
+                    
                     if chk:
                         selected_indices.append(idx)
+                        educator_counts[idx] = t_count
 
                 confirm_submit = st.form_submit_button("✅ Build Audit Sheet for Selected Videos Only")
 
@@ -552,57 +518,52 @@ else:
                     rows = []
                     for s_idx in selected_indices:
                         sv = videos[s_idx]
+                        raw_sec = sv.get("raw_seconds", 0)
+                        t_cnt = educator_counts.get(s_idx, 1)
+                        allocated_sec = raw_sec / t_cnt
+                        
                         rows.append({
                             "User ID": st.session_state["user_id"],
                             "Video ID": sv.get('id'),
                             "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
-                            "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
-                            "Teachers Count": 1,
-                            "_raw_sec": sv.get("raw_seconds", 0)
+                            "Original Duration": sv.get("duration_hhmmss", "00:00:00"),
+                            "Teachers Count": t_cnt,
+                            "Allocated Duration (HH:MM:SS)": seconds_to_hhmmss(allocated_sec),
+                            "_allocated_sec": allocated_sec
                         })
                     st.session_state["processed_df"] = pd.DataFrame(rows)
-                    st.success(f"Loaded {len(selected_indices)} videos into Step 3.")
+                    st.success(f"Loaded {len(selected_indices)} videos into Step 3 with precise educator split.")
 
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
-        st.subheader("Step 3: Verification & Co-Host Hours Split")
+        st.subheader("Step 3: Verification & Co-Host Hours Split Sheet")
         
-        df_to_edit = st.session_state["processed_df"].copy()
+        df_display = st.session_state["processed_df"].copy()
 
-        edited_df = st.data_editor(
-            df_to_edit[["User ID", "Video ID", "Cleaned YT Link", "Duration (HH:MM:SS)", "Teachers Count"]],
+        st.dataframe(
+            df_display[["User ID", "Video ID", "Cleaned YT Link", "Original Duration", "Teachers Count", "Allocated Duration (HH:MM:SS)"]],
             column_config={
-                "User ID": st.column_config.TextColumn("User ID", disabled=True),
-                "Video ID": st.column_config.TextColumn("Video ID", disabled=True),
-                "Cleaned YT Link": st.column_config.LinkColumn("YT Link", disabled=True),
-                "Duration (HH:MM:SS)": st.column_config.TextColumn("Duration (HH:MM:SS)", disabled=True),
-                "Teachers Count": st.column_config.SelectboxColumn("Teachers Count", options=[1, 2, 3, 4])
+                "User ID": st.column_config.TextColumn("User ID"),
+                "Video ID": st.column_config.TextColumn("Video ID"),
+                "Cleaned YT Link": st.column_config.LinkColumn("YT Link"),
+                "Original Duration": st.column_config.TextColumn("Original Duration"),
+                "Teachers Count": st.column_config.NumberColumn("Teachers Count"),
+                "Allocated Duration (HH:MM:SS)": st.column_config.TextColumn("Allocated Duration (HH:MM:SS)")
             },
             hide_index=True,
             use_container_width=True
         )
         
-        split_durations = []
-        tot_seconds = 0
-        
-        for idx, row in edited_df.iterrows():
-            raw_sec = df_to_edit.loc[idx, "_raw_sec"]
-            teachers = row["Teachers Count"]
-            allocated_sec = raw_sec / teachers
-            tot_seconds += allocated_sec
-            split_durations.append(seconds_to_hhmmss(allocated_sec))
-
-        edited_df["Allocated Duration (HH:MM:SS)"] = split_durations
-        
-        col1, col2 = st.columns(2)
-        total_vids = len(edited_df)
+        tot_seconds = df_display["_allocated_sec"].sum()
+        total_vids = len(df_display)
         total_hhmmss = seconds_to_hhmmss(tot_seconds)
         
+        col1, col2 = st.columns(2)
         col1.metric("Selected Content Items", f"{total_vids}")
-        col2.metric("Total Reconciled Time", f"{total_hhmmss}")
+        col2.metric("Total Reconciled Time (Post-Split)", f"{total_hhmmss}")
         
-        final_df = edited_df[["User ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
+        final_df = df_display[["User ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
         total_row = pd.DataFrame([{
             "User ID": "TOTAL", 
             "Video ID": "-", 
