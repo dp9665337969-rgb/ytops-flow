@@ -76,8 +76,10 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
     }
 
-    /* Primary Dark Slate / Indigo Action Button */
-    .stButton>button {
+    /* ---------------------------------------------------------
+       FIXED BUTTON STYLING (PURE WHITE TEXT ON ALL BUTTONS)
+       --------------------------------------------------------- */
+    .stButton>button, .stDownloadButton>button {
         background: #1E293B !important;
         color: #FFFFFF !important;
         border-radius: 12px !important;
@@ -90,7 +92,14 @@ st.markdown("""
         width: 100%;
     }
 
-    .stButton>button:hover {
+    /* Target inner text, p, and span tags inside buttons to force pure white */
+    .stButton>button *, .stDownloadButton>button * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        font-weight: 700 !important;
+    }
+
+    .stButton>button:hover, .stDownloadButton>button:hover {
         background: #0F172A !important;
         transform: translateY(-2px) !important;
         box-shadow: 0 14px 24px -5px rgba(15, 23, 42, 0.4) !important;
@@ -424,7 +433,7 @@ else:
         st.session_state.pop("fetched_videos", None)
         st.rerun()
 
-    # CARTOON TEACHER DIALOGUE BANNER (NEW CREATIVE FEATURE)
+    # CARTOON TEACHER DIALOGUE BANNER
     st.markdown("""
         <div class="teacher-dialogue-card">
             <div class="teacher-avatar">👨‍🏫</div>
