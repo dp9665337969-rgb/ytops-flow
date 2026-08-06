@@ -55,7 +55,7 @@ def extract_playlist_id(url):
     return match.group(1) if match else None
 
 def get_playlist_videos(api_key, playlist_id):
-    """ Fetch up to 50 videos from a YouTube Playlist """
+    """ Fetch up to 50 videos safely with fallback for thumbnails """
     try:
         youtube = build('youtube', 'v3', developerKey=api_key)
         request = youtube.playlistItems().list(
@@ -67,17 +67,38 @@ def get_playlist_videos(api_key, playlist_id):
         
         videos = []
         video_ids = []
+        
+        fallback_thumb = "https://via.placeholder.com/120x90.png?text=No+Image"
+
         for item in response.get('items', []):
-            v_id = item['contentDetails']['videoId']
-            title = item['snippet']['title']
-            thumb = item['snippet']['thumbnails']['default']['url']
-            video_ids.append(v_id)
-            videos.append({"id": v_id, "title": title, "thumbnail": thumb})
+            snippet = item.get('snippet', {})
+            content = item.get('contentDetails', {})
             
-        # Get Durations
-        durations = get_video_durations(api_key, video_ids)
-        for v in videos:
-            v["duration"] = durations.get(v["id"], 0.0)
+            v_id = content.get('videoId')
+            if not v_id:
+                continue
+                
+            title = snippet.get('title', 'Untitled Video')
+            
+            # Safe Thumbnail Extraction (FIX APPLIED HERE)
+            thumbnails = snippet.get('thumbnails', {})
+            default_thumb = thumbnails.get('default', {}).get('url') or \
+                            thumbnails.get('medium', {}).get('url') or \
+                            thumbnails.get('high', {}).get('url') or \
+                            fallback_thumb
+            
+            # Skip private/deleted videos with no title
+            if title in ["Private video", "Deleted video"]:
+                continue
+
+            video_ids.append(v_id)
+            videos.append({"id": v_id, "title": title, "thumbnail": default_thumb})
+            
+        # Get Durations in bulk
+        if video_ids:
+            durations = get_video_durations(api_key, video_ids)
+            for v in videos:
+                v["duration"] = durations.get(v["id"], 0.0)
             
         return videos
     except Exception as e:
