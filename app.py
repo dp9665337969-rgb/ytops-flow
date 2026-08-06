@@ -1,5 +1,7 @@
 import streamlit as st
 import re
+import pandas as pdimport streamlit as st
+import re
 import pandas as pd
 from googleapiclient.discovery import build
 import isodate
@@ -183,6 +185,8 @@ else:
     if st.sidebar.button("Log Out"):
         st.session_state["logged_in"] = False
         st.session_state["user_id"] = ""
+        st.session_state.pop("processed_df", None)
+        st.session_state.pop("fetched_videos", None)
         st.rerun()
 
     # Header
@@ -213,7 +217,7 @@ else:
                     if vid:
                         rows.append({
                             "Educator ID": st.session_state["user_id"],
-                            "Video ID": vid,  # ADDED VIDEO ID COLUMN
+                            "Video ID": vid,
                             "Cleaned YT Link": f"https://www.youtube.com/watch?v={vid}",
                             "Total Duration (Hrs)": durations.get(vid, 0.0),
                             "Teachers Count": 1
@@ -260,7 +264,7 @@ else:
                 for sv in selected_videos:
                     rows.append({
                         "Educator ID": st.session_state["user_id"],
-                        "Video ID": sv['id'],  # ADDED VIDEO ID COLUMN
+                        "Video ID": sv['id'],
                         "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv['id']}",
                         "Total Duration (Hrs)": sv["duration"],
                         "Teachers Count": 1
@@ -268,15 +272,21 @@ else:
                 st.session_state["processed_df"] = pd.DataFrame(rows)
 
     # STEP 3: RECONCILIATION TABLE & CSV EXPORT
-    if "processed_df" in st.session_state and not st.session_state["processed_df"].empty:
+    if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
         st.subheader("Step 3: Verification & Multi-Teacher Split Table")
         
+        df_to_edit = st.session_state["processed_df"].copy()
+        
+        # Safe column check to prevent KeyError
+        if "Video ID" not in df_to_edit.columns:
+            df_to_edit["Video ID"] = df_to_edit["Cleaned YT Link"].apply(lambda x: extract_video_id(str(x)) or "-")
+
         edited_df = st.data_editor(
-            st.session_state["processed_df"],
+            df_to_edit,
             column_config={
                 "Educator ID": st.column_config.TextColumn("Educator ID", disabled=True),
-                "Video ID": st.column_config.TextColumn("Video ID", disabled=True), # ADDED TO EDITOR
+                "Video ID": st.column_config.TextColumn("Video ID", disabled=True),
                 "Cleaned YT Link": st.column_config.LinkColumn("Clean YT Link", disabled=True),
                 "Total Duration (Hrs)": st.column_config.NumberColumn("Total Duration", format="%.2f hrs", disabled=True),
                 "Teachers Count": st.column_config.SelectboxColumn("Teachers Count", options=[1, 2, 3, 4], help="Split hours across co-educators")
@@ -294,8 +304,10 @@ else:
         col1.metric("Total Videos Audited", f"{total_vids} Videos")
         col2.metric("Total Reconciled Hours", f"{tot_hrs:.2f} Hours")
         
-        # CSV Export Preparation
-        final_df = edited_df[["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Hours"]]
+        # Safe Export Column Extraction
+        cols_to_export = [c for c in ["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Hours"] if c in edited_df.columns]
+        final_df = edited_df[cols_to_export]
+        
         total_row = pd.DataFrame([{"Educator ID": "TOTAL", "Video ID": "-", "Cleaned YT Link": "-", "Allocated Hours": round(tot_hrs, 2)}])
         export_df = pd.concat([final_df, total_row], ignore_index=True)
         
