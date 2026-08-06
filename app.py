@@ -152,6 +152,50 @@ st.markdown("""
         font-size: 0.9rem;
     }
 
+    /* Teacher Cartoon Dialogue Card on Dashboard */
+    .teacher-dialogue-card {
+        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        border: 2px solid #BFDBFE;
+        border-radius: 20px;
+        padding: 20px 25px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .teacher-avatar {
+        font-size: 55px;
+        background: #FFFFFF;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        border: 2px solid #3B82F6;
+        flex-shrink: 0;
+    }
+
+    .speech-bubble {
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 14px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #E2E8F0;
+        position: relative;
+    }
+
+    .speech-bubble p {
+        margin: 0 !important;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1E3A8A !important;
+        line-height: 1.4;
+    }
+
     div[data-testid="stMetricValue"] {
         color: #2563EB !important;
         font-weight: 900 !important;
@@ -163,6 +207,7 @@ st.markdown("""
 # ACCESS CONTROL SYSTEM
 # ---------------------------------------------------------
 ALLOWED_USERS = {
+    "UNAC_58291": "Pass@123",
     "9999999999": "Pass@123",
     "FACULTY_101": "Pass@123",
     "FACULTY_202": "Educator@2026",
@@ -378,6 +423,16 @@ else:
         st.session_state.pop("processed_df", None)
         st.session_state.pop("fetched_videos", None)
         st.rerun()
+
+    # CARTOON TEACHER DIALOGUE BANNER (NEW CREATIVE FEATURE)
+    st.markdown("""
+        <div class="teacher-dialogue-card">
+            <div class="teacher-avatar">👨‍🏫</div>
+            <div class="speech-bubble">
+                <p>🦄 "Chinta mat karo, iss baar salary bilkul nahi kategi! ReconcileX AI se saare teaching hours ekdam 100% accuracy ke saath count ho gaye hain!" ✨</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
     # Main Header
     st.markdown("<h1 style='font-size: 2.2rem; font-weight: 800; color: #0F172A;'>📹 ReconcileX Content Engine</h1>", unsafe_allow_html=True)
