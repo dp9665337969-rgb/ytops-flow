@@ -401,7 +401,6 @@ else:
 
     # Main Header
     st.markdown("<h1 style='font-size: 2.2rem; font-weight: 800; color: #0F172A;'>📹 ReconcileX Content Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<h1 style='font-size: 2.2rem; font-weight: 800; color: #0F172A;'>📹 ReconcileX Content Engine</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #64748B; font-size: 1rem; margin-top: -10px;'>Fetch channel content, adjust co-educator live hours, and generate audit sheets.</p>", unsafe_allow_html=True)
 
     mode = st.radio("Select Audit Workflow:", [
