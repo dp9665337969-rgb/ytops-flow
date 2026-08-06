@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Custom Styling for ReconcileX AI Hero & Dashboard UI
-st.markdown("""
+st.markdown('<div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 30px 0;"><span style="color: #64748B; font-weight: 600;">Made by</span><a href="https://instagram.com/deepak_patil_7979" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white !important; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">📷 @deepak_patil_7979</a></div>', unsafe_allow_html=True)
     <style>
     /* Global Theme */
     .stApp {
