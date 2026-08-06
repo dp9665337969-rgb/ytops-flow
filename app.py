@@ -1,6 +1,6 @@
 import streamlit as st
 import re
-import pandas as pdimport streamlit as st
+import pandas as pdimport streamlit as stimport streamlit as st
 import re
 import pandas as pd
 from googleapiclient.discovery import build
@@ -278,7 +278,6 @@ else:
         
         df_to_edit = st.session_state["processed_df"].copy()
         
-        # Safe column check to prevent KeyError
         if "Video ID" not in df_to_edit.columns:
             df_to_edit["Video ID"] = df_to_edit["Cleaned YT Link"].apply(lambda x: extract_video_id(str(x)) or "-")
 
@@ -304,7 +303,6 @@ else:
         col1.metric("Total Videos Audited", f"{total_vids} Videos")
         col2.metric("Total Reconciled Hours", f"{tot_hrs:.2f} Hours")
         
-        # Safe Export Column Extraction
         cols_to_export = [c for c in ["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Hours"] if c in edited_df.columns]
         final_df = edited_df[cols_to_export]
         
