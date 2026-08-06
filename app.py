@@ -140,7 +140,7 @@ if "user_id" not in st.session_state:
 # HELPER FUNCTIONS FOR DURATION & API
 # ---------------------------------------------------------
 def seconds_to_hhmmss(seconds):
-    """ Converts total seconds to exact HH:MM:SS format for Excel mapping """
+    """ Converts total seconds to exact HH:MM:SS format """
     hours = int(seconds // 3600)
     minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)
@@ -176,75 +176,82 @@ def fetch_videos_last_45_days(api_key, playlist_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
     all_videos = []
     seen_ids = set()
-    
     cutoff_date = datetime.now(timezone.utc) - timedelta(days=45)
     
     try:
-        request = youtube.playlistItems().list(
-            part="snippet,contentDetails",
-            playlistId=playlist_id,
-            maxResults=50
-        )
-        response = request.execute()
+        next_page_token = None
         
-        temp_dict = {}
-        v_ids = []
-        
-        for item in response.get('items', []):
-            snippet = item.get('snippet', {})
-            content = item.get('contentDetails', {})
-            v_id = content.get('videoId')
+        while len(all_videos) < 100: # Limit loop iterations for performance
+            request = youtube.playlistItems().list(
+                part="snippet,contentDetails",
+                playlistId=playlist_id,
+                maxResults=50,
+                pageToken=next_page_token
+            )
+            response = request.execute()
             
-            if not v_id or v_id in seen_ids:
-                continue
-                
-            title = snippet.get('title', 'Untitled')
-            if title in ["Private video", "Deleted video"]:
-                continue
-                
-            published_at_str = snippet.get('publishedAt')
-            if published_at_str:
-                pub_date = datetime.fromisoformat(published_at_str.replace("Z", "+00:00"))
-                if pub_date < cutoff_date:
-                    continue
-
-            seen_ids.add(v_id)
-            thumbnails = snippet.get('thumbnails', {})
-            thumb_url = thumbnails.get('medium', {}).get('url') or thumbnails.get('default', {}).get('url', '')
+            temp_list = []
+            v_ids = []
             
-            temp_dict[v_id] = {
-                "id": v_id,
-                "title": title,
-                "thumbnail": thumb_url
-            }
-            v_ids.append(v_id)
-
-        if v_ids:
-            details = youtube.videos().list(
-                part="contentDetails,snippet",
-                id=",".join(v_ids)
-            ).execute()
-            
-            for item in details.get('items', []):
-                vid = item['id']
-                iso_dur = item['contentDetails']['duration']
-                parsed_dur = isodate.parse_duration(iso_dur)
-                total_seconds = parsed_dur.total_seconds()
+            for item in response.get('items', []):
+                snippet = item.get('snippet', {})
+                content = item.get('contentDetails', {})
+                v_id = content.get('videoId')
                 
-                # Exclude Shorts (< 60s)
-                if total_seconds < 60:
+                if not v_id or v_id in seen_ids:
                     continue
                     
-                hhmmss_str = seconds_to_hhmmss(total_seconds)
+                title = snippet.get('title', 'Untitled')
+                if title in ["Private video", "Deleted video"]:
+                    continue
+                    
+                published_at_str = snippet.get('publishedAt')
+                if published_at_str:
+                    pub_date = datetime.fromisoformat(published_at_str.replace("Z", "+00:00"))
+                    if pub_date < cutoff_date:
+                        continue
+
+                seen_ids.add(v_id)
+                thumbnails = snippet.get('thumbnails', {})
+                thumb_url = thumbnails.get('medium', {}).get('url') or thumbnails.get('default', {}).get('url', '')
                 
-                if vid in temp_dict:
-                    vid_info = temp_dict[vid]
-                    vid_info["duration_hhmmss"] = hhmmss_str
-                    vid_info["raw_seconds"] = total_seconds
-                    all_videos.append(vid_info)
+                temp_list.append({
+                    "id": v_id,
+                    "title": title,
+                    "thumbnail": thumb_url
+                })
+                v_ids.append(v_id)
+
+            if v_ids:
+                # Direct API call to fetch actual durations
+                details = youtube.videos().list(
+                    part="contentDetails",
+                    id=",".join(v_ids)
+                ).execute()
+                
+                durations_map = {}
+                for d_item in details.get('items', []):
+                    vid = d_item['id']
+                    iso_dur = d_item['contentDetails']['duration']
+                    sec = isodate.parse_duration(iso_dur).total_seconds()
+                    durations_map[vid] = sec
+
+                for item in temp_list:
+                    vid_id = item["id"]
+                    total_sec = durations_map.get(vid_id, 0)
+                    
+                    # Filter Shorts (<60s)
+                    if total_sec >= 60:
+                        item["duration_hhmmss"] = seconds_to_hhmmss(total_sec)
+                        item["raw_seconds"] = total_sec
+                        all_videos.append(item)
+
+            next_page_token = response.get('nextPageToken')
+            if not next_page_token:
+                break
 
     except Exception as e:
-        st.error(f"API Error: {str(e)}")
+        st.error(f"API Fetch Error: {str(e)}")
         
     return all_videos
 
@@ -254,7 +261,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 if not st.session_state["logged_in"]:
     st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center;' class='brand-header'>🔴 PulseOps Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;' class='brand-subheader'>Secure YouTube Content Operations & Verification Suite</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;' class='brand-subheader'>Secure YouTube Content Operations Suite</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
@@ -294,8 +301,8 @@ else:
     st.sidebar.markdown("""
         <div class="sidebar-brand-card">
             <span style="font-size: 24px;">📺🔴</span><br>
-            <strong style="color: #38BDF8;">API Status: Active</strong><br>
-            <small style="color: #94A3B8;">Duration Format: HH:MM:SS</small>
+            <strong style="color: #38BDF8;">Format: HH:MM:SS</strong><br>
+            <small style="color: #94A3B8;">Clean Audit Enabled</small>
         </div>
     """, unsafe_allow_html=True)
 
@@ -308,7 +315,7 @@ else:
 
     # Main Header
     st.markdown("<h1 class='brand-header'>📹 YouTube Audit & Reconciliation Hub</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='brand-subheader'>Extract long-form videos & live streams from last 45 days, manage co-educator splits, and export HH:MM:SS Excel sheets.</p>", unsafe_allow_html=True)
+    st.markdown("<p class='brand-subheader'>Extract videos & live streams from last 45 days, manage co-educator splits, and export clean HH:MM:SS Excel sheets.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     mode = st.radio("Select Workflow Mode:", [
@@ -331,13 +338,11 @@ else:
                 v_ids = [extract_video_id(l) for l in links if extract_video_id(l)]
                 
                 youtube = build('youtube', 'v3', developerKey=api_key)
-                req = youtube.videos().list(part="snippet,contentDetails", id=",".join(v_ids)).execute()
+                req = youtube.videos().list(part="contentDetails", id=",".join(v_ids)).execute()
                 
                 rows = []
                 for item in req.get('items', []):
                     vid = item['id']
-                    title = item['snippet']['title']
-                    
                     iso_dur = item['contentDetails']['duration']
                     total_sec = isodate.parse_duration(iso_dur).total_seconds()
                     
@@ -349,7 +354,6 @@ else:
                     rows.append({
                         "Educator ID": st.session_state["user_id"],
                         "Video ID": vid,
-                        "Video Title": title,
                         "Cleaned YT Link": f"https://www.youtube.com/watch?v={vid}",
                         "Duration (HH:MM:SS)": hhmmss_str,
                         "Teachers Count": 1,
@@ -385,9 +389,9 @@ else:
 
         if "fetched_videos" in st.session_state and st.session_state["fetched_videos"]:
             st.markdown("---")
-            st.subheader("Step 2: Select Videos for Audit (Last 45 Days)")
+            st.subheader("Step 2: Select Videos for Audit")
             videos = st.session_state["fetched_videos"]
-            st.info(f"Found **{len(videos)}** eligible items (Shorts excluded). Select items to include:")
+            st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items to include:")
             
             selected_videos = []
             for idx, vid in enumerate(videos):
@@ -396,7 +400,7 @@ else:
                 c2.image(vid.get("thumbnail", ""), width=100)
                 
                 duration_display = vid.get("duration_hhmmss", "00:00:00")
-                c3.markdown(f"**{vid.get('title', 'Untitled')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
+                c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
                 
                 if chk:
                     selected_videos.append(vid)
@@ -407,7 +411,6 @@ else:
                     rows.append({
                         "Educator ID": st.session_state["user_id"],
                         "Video ID": sv.get('id'),
-                        "Video Title": sv.get('title'),
                         "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
                         "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
                         "Teachers Count": 1,
@@ -423,11 +426,10 @@ else:
         df_to_edit = st.session_state["processed_df"].copy()
 
         edited_df = st.data_editor(
-            df_to_edit[["Educator ID", "Video ID", "Video Title", "Cleaned YT Link", "Duration (HH:MM:SS)", "Teachers Count"]],
+            df_to_edit[["Educator ID", "Video ID", "Cleaned YT Link", "Duration (HH:MM:SS)", "Teachers Count"]],
             column_config={
                 "Educator ID": st.column_config.TextColumn("Educator ID", disabled=True),
                 "Video ID": st.column_config.TextColumn("Video ID", disabled=True),
-                "Video Title": st.column_config.TextColumn("Video Title", disabled=True),
                 "Cleaned YT Link": st.column_config.LinkColumn("YT Link", disabled=True),
                 "Duration (HH:MM:SS)": st.column_config.TextColumn("Duration (HH:MM:SS)", disabled=True),
                 "Teachers Count": st.column_config.SelectboxColumn("Teachers Count", options=[1, 2, 3, 4])
@@ -455,11 +457,10 @@ else:
         col1.metric("Selected Videos / Lives", f"{total_vids}")
         col2.metric("Total Reconciled Time", f"{total_hhmmss}")
         
-        final_df = edited_df[["Educator ID", "Video ID", "Video Title", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
+        final_df = edited_df[["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
         total_row = pd.DataFrame([{
             "Educator ID": "TOTAL", 
             "Video ID": "-", 
-            "Video Title": "-", 
             "Cleaned YT Link": "-", 
             "Allocated Duration (HH:MM:SS)": total_hhmmss
         }])
