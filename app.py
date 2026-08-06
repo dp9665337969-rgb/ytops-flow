@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Custom Styling for ReconcileX AI Hero & Dashboard UI
-st.markdown('<div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 30px 0;"><span style="color: #64748B; font-weight: 600;">Made by</span><a href="https://instagram.com/deepak_patil_7979" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white !important; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">📷 @deepak_patil_7979</a></div>', unsafe_allow_html=True)
+st.markdown("""
     <style>
     /* Global Theme */
     .stApp {
@@ -145,17 +145,6 @@ st.markdown('<div style="display: flex; align-items: center; justify-content: ce
         transform: translateY(-2px) !important;
     }
 
-    st.markdown("""
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 40px; margin-bottom: 20px;">
-        <span style="color: #64748B; font-weight: 600; font-size: 0.95rem;">Made by</span>
-        <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white !important; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(220, 39, 67, 0.25);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            @deepak_patil_7979
-        </a>
-    </div>
-""", unsafe_allow_html=True)
     /* BADGE CARDS ON LEFT AND RIGHT OF LOGIN */
     .badge-card {
         background: #FFFFFF;
@@ -321,7 +310,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
     
-    # 1. TOP DIALOGUE BANNER (CRISP & SHORT UNDER 10 WORDS)
+    # 1. TOP DIALOGUE BANNER
     st.markdown("""
         <div class="hero-dialogue-card">
             <div class="dialogue-wrapper">
@@ -392,6 +381,9 @@ if not st.session_state["logged_in"]:
                 <div class="badge-title">Zero Salary Cut Guarantee</div>
             </div>
         """, unsafe_allow_html=True)
+
+    # INSTAGRAM FOOTER (PAGE 1)
+    st.markdown('<div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 30px 0;"><span style="color: #64748B; font-weight: 600;">Made by</span><a href="https://instagram.com/deepak_patil_7979" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white !important; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">📷 @deepak_patil_7979</a></div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # SCREEN 2: MAIN DASHBOARD INTERFACE
@@ -508,7 +500,6 @@ else:
                     duration_display = vid.get("duration_hhmmss", "00:00:00")
                     c3.markdown(f"**{vid.get('title', 'Video')}**\n\n⏱️ Duration: `{duration_display}` | 🔗 [Open Link](https://www.youtube.com/watch?v={vid.get('id')})")
                     
-                    # Educator Count Selection Box (Defaults to 1)
                     t_count = c4.number_input(
                         "Educators Count", 
                         min_value=1, 
@@ -547,14 +538,11 @@ else:
                     st.session_state["processed_df"] = pd.DataFrame(rows)
                     st.success(f"Loaded {len(selected_indices)} videos into Step 3 with precise educator split.")
 
-# TABLE & EXPORT
+    # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
         st.subheader("Step 3: Verification & Co-Host Hours Split Sheet")
         
-        # ---------------------------------------------------------
-        # NEW REASSURANCE BANNER FOR FACULTY / USER
-        # ---------------------------------------------------------
         st.markdown("""
             <div style="
                 background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
@@ -578,7 +566,6 @@ else:
                 </div>
             </div>
         """, unsafe_allow_html=True)
-        # ---------------------------------------------------------
 
         df_display = st.session_state["processed_df"].copy()
 
@@ -620,3 +607,6 @@ else:
             file_name=f"ReconcileX_Audit_{st.session_state['user_id']}.csv", 
             mime="text/csv"
         )
+
+    # INSTAGRAM FOOTER (PAGE 2)
+    st.markdown('<div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 30px 0;"><span style="color: #64748B; font-weight: 600;">Made by</span><a href="https://instagram.com/deepak_patil_7979" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white !important; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">📷 @deepak_patil_7979</a></div>', unsafe_allow_html=True)
