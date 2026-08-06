@@ -386,11 +386,14 @@ if not st.session_state["logged_in"]:
 # SCREEN 2: MAIN DASHBOARD INTERFACE
 # ---------------------------------------------------------
 else:
-    # Sidebar
+    st.success("🎉 Sir, chinta mat karo es baar aapki salary nahi kategi!")
+
     st.sidebar.markdown("## ⚡ ReconcileX AI")
     st.sidebar.markdown(f"👤 Active Operator: **{st.session_state['user_id']}**")
+    
+    # Sidebar
 
-    if st.sidebar.button("Logout"):
+  if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
         st.session_state["user_id"] = ""
         st.session_state.pop("processed_df", None)
