@@ -6,144 +6,141 @@ from googleapiclient.discovery import build
 import isodate
 
 # ---------------------------------------------------------
-# PAGE CONFIGURATION & ULTRA-HIGH END SAAS THEME
+# PAGE CONFIGURATION & UNACADEMY SAAS THEME
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="PulseOps | Ultra Enterprise Hub",
-    page_icon="⚡",
+    page_title="Unacademy Ops | Reconcile Hub",
+    page_icon="🟢",
     layout="wide"
 )
 
-# Deep Luxury SaaS CSS Styling
+# Unacademy Signature Corporate Theme
 st.markdown("""
     <style>
-    /* Global Base */
+    /* Global Background & Font */
     .stApp, [data-testid="stSidebar"] {
-        background: #090D16 !important;
-        color: #F1F5F9 !important;
-        font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+        background: #0C1017 !important;
+        color: #F8FAFC !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     
-    /* Hide Streamlit Header Elements */
     header {visibility: hidden;}
     footer {visibility: hidden;}
 
-    /* Typography */
+    /* Unacademy Primary Typography */
     h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
         color: #F8FAFC !important;
     }
 
-    /* Premium Neon Brand Header */
+    /* Brand Header - Unacademy Green Accent */
     .brand-header {
-        font-size: 2.8rem;
-        font-weight: 900;
-        background: linear-gradient(135deg, #FF1E27 0%, #FF5252 50%, #38BDF8 100%);
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #08BD80 0%, #00E5FF 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        letter-spacing: -1.2px;
-        margin-bottom: 0px;
+        letter-spacing: -1px;
+        margin-bottom: 4px;
     }
 
     .brand-subheader {
         color: #94A3B8 !important;
-        font-size: 1.05rem;
+        font-size: 1rem;
         font-weight: 400;
         margin-bottom: 25px;
     }
 
-    /* Glassmorphism Input Cards */
+    /* Inputs & Textareas */
     .stTextInput input, .stTextArea textarea {
-        background-color: #111827 !important;
+        background-color: #161D2A !important;
         color: #FFFFFF !important;
-        border: 1px solid #1F2937 !important;
-        border-radius: 14px !important;
-        padding: 14px !important;
+        border: 1px solid #283346 !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
         font-size: 0.95rem;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #FF1E27 !important;
-        box-shadow: 0 0 18px rgba(255, 30, 39, 0.35) !important;
+        border-color: #08BD80 !important;
+        box-shadow: 0 0 12px rgba(8, 189, 128, 0.25) !important;
     }
 
-    /* Primary Buttons */
+    /* Unacademy Green Buttons */
     .stButton>button {
-        background: linear-gradient(135deg, #FF1E27 0%, #D90429 100%) !important;
-        color: #FFFFFF !important;
-        border-radius: 12px !important;
+        background: #08BD80 !important;
+        color: #0C1017 !important;
+        border-radius: 10px !important;
         font-weight: 800 !important;
         border: none !important;
-        padding: 0.75rem 1.6rem !important;
-        box-shadow: 0 4px 22px rgba(255, 30, 39, 0.45) !important;
-        transition: all 0.25s ease-in-out !important;
+        padding: 0.7rem 1.5rem !important;
+        box-shadow: 0 4px 15px rgba(8, 189, 128, 0.3) !important;
+        transition: all 0.2s ease-in-out !important;
         width: 100%;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
+        letter-spacing: 0.5px;
     }
 
     .stButton>button:hover {
+        background: #07A36F !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 30px rgba(255, 30, 39, 0.75) !important;
+        box-shadow: 0 6px 20px rgba(8, 189, 128, 0.5) !important;
     }
 
-    /* Sidebar Styling & Creator Badge */
+    /* Sidebar Styling & Badge */
     [data-testid="stSidebar"] {
         border-right: 1px solid #1E293B !important;
         padding-top: 2rem;
     }
 
     .sidebar-creator-card {
-        background: linear-gradient(145deg, #111827 0%, #0F172A 100%);
-        border: 1px solid #1E293B;
-        border-left: 4px solid #38BDF8;
-        padding: 16px;
-        border-radius: 14px;
+        background: #161D2A;
+        border: 1px solid #283346;
+        border-left: 4px solid #08BD80;
+        padding: 14px;
+        border-radius: 10px;
         margin-top: 15px;
-        margin-bottom: 25px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
     }
 
     .sidebar-creator-card .label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 1px;
         color: #64748B;
         font-weight: 700;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
     }
 
     .sidebar-creator-card .creator-name {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 800;
-        color: #38BDF8;
+        color: #08BD80;
         text-decoration: none;
     }
+    
     .sidebar-creator-card .creator-name:hover {
-        color: #7DD3FC;
+        color: #00E5FF;
         text-decoration: underline;
     }
 
-    /* Custom Metric Cards */
+    /* Metric Cards */
     div[data-testid="stMetricValue"] {
-        font-size: 34px !important;
-        color: #38BDF8 !important;
-        font-weight: 900 !important;
+        font-size: 32px !important;
+        color: #08BD80 !important;
+        font-weight: 800 !important;
     }
 
     div[data-testid="stMetricLabel"] {
         color: #94A3B8 !important;
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
         font-weight: 600 !important;
     }
 
-    /* Radio Tabs Styling */
+    /* Radio Tabs */
     div[role="radiogroup"] {
-        background: #111827;
+        background: #161D2A;
         padding: 6px;
-        border-radius: 14px;
-        border: 1px solid #1F2937;
-        gap: 10px;
+        border-radius: 10px;
+        border: 1px solid #283346;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -263,7 +260,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
                     vid_id = item["id"]
                     total_sec = durations_map.get(vid_id, 0)
                     
-                    if total_sec >= 60: # Filter Shorts (<60s)
+                    if total_sec >= 60: # Exclude Shorts
                         item["duration_hhmmss"] = seconds_to_hhmmss(total_sec)
                         item["raw_seconds"] = total_sec
                         all_videos.append(item)
@@ -282,18 +279,18 @@ def fetch_videos_last_45_days(api_key, playlist_id):
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
     st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
-    st.markdown("<h1 style='text-align: center;' class='brand-header'>🔴 PulseOps Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;' class='brand-subheader'>Enterprise YouTube Verification & Operations Suite</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;' class='brand-header'>🟢 Unacademy PulseOps</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;' class='brand-subheader'>Educator YouTube Audit & Reconciliation Suite</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         with st.form("login_form"):
-            st.markdown("<h3 style='text-align: center; font-weight: 800;'>🔐 Authorized Sign In</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; font-weight: 700;'>🔐 Operations Login</h3>", unsafe_allow_html=True)
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             user_id = st.text_input("Educator / Admin ID", placeholder="e.g. UNAC_58291")
             password = st.text_input("Password", type="password", placeholder="••••••••")
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            submit = st.form_submit_button("Access Portal →")
+            submit = st.form_submit_button("Sign In to Portal →")
             
             if submit:
                 if user_id in ALLOWED_FACULTY and ALLOWED_FACULTY[user_id] == password:
@@ -301,12 +298,12 @@ if not st.session_state["logged_in"]:
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("❌ Authentication Failed: Invalid Credentials.")
+                    st.error("❌ Invalid Credentials. Contact Unacademy Ops Team.")
 
         st.markdown("""
             <div style="text-align: center; margin-top: 20px;">
                 <span style="color: #64748B; font-size: 0.85rem;">Engineered by</span> 
-                <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
+                <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #08BD80; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
             </div>
         """, unsafe_allow_html=True)
 
@@ -315,45 +312,44 @@ if not st.session_state["logged_in"]:
 # ---------------------------------------------------------
 else:
     # Sidebar
-    st.sidebar.markdown("## 🔴 PulseOps Hub")
-    st.sidebar.markdown(f"👤 Active Operator: **{st.session_state['user_id']}**")
+    st.sidebar.markdown("## 🟢 Unacademy Ops")
+    st.sidebar.markdown(f"👤 Active ID: **{st.session_state['user_id']}**")
     
-    # Creator Badge in Sidebar
     st.sidebar.markdown("""
         <div class="sidebar-creator-card">
-            <div class="label">Platform Developer</div>
+            <div class="label">System Architect</div>
             <a class="creator-name" href="https://instagram.com/deepak_patil_7979" target="_blank">
-                ⚡ Created by @deepak_patil_7979
+                ⚡ Engineered by @deepak_patil_7979
             </a>
         </div>
     """, unsafe_allow_html=True)
 
-    if st.sidebar.button("Secure Logout"):
+    if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
         st.session_state["user_id"] = ""
         st.session_state.pop("processed_df", None)
         st.session_state.pop("fetched_videos", None)
         st.rerun()
 
-    # Main Header
+    # Header
     st.markdown("<h1 class='brand-header'>📹 YouTube Audit & Reconciliation</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='brand-subheader'>Extract long-form content, perform split calculations, and export verified HH:MM:SS sheets.</p>", unsafe_allow_html=True)
+    st.markdown("<p class='brand-subheader'>Fetch YouTube sessions, calculate co-educator splits, and generate audit-ready reports.</p>", unsafe_allow_html=True)
 
-    mode = st.radio("Select Workflow Mode:", [
+    mode = st.radio("Select Audit Mode:", [
         "📋 Mode A: Direct Video Links", 
         "📺 Mode B: Channel / Playlist (Last 45 Days)"
     ], horizontal=True)
 
     api_key = st.secrets.get("YOUTUBE_API_KEY", "")
 
-    # MODE A: DIRECT LINKS
+    # MODE A
     if "Mode A" in mode:
         st.subheader("Step 1: Input Direct YouTube Links")
         raw_links_text = st.text_area("Paste video/live links below (one per line):", height=140, placeholder="https://www.youtube.com/watch?v=...\nhttps://youtu.be/...")
         
         if st.button("🚀 Process Direct Links"):
             if not api_key:
-                st.error("API Key missing in Secrets!")
+                st.error("API Key missing in Streamlit Secrets!")
             elif raw_links_text.strip():
                 links = [l.strip() for l in raw_links_text.split("\n") if l.strip()]
                 v_ids = [extract_video_id(l) for l in links if extract_video_id(l)]
@@ -382,7 +378,7 @@ else:
                     })
                 st.session_state["processed_df"] = pd.DataFrame(rows)
 
-    # MODE B: CHANNEL / PLAYLIST (LAST 45 DAYS)
+    # MODE B
     else:
         st.subheader("Step 1: Ingest Channel Handle or Playlist URL")
         channel_input = st.text_input(
@@ -392,7 +388,7 @@ else:
         
         if st.button("🔍 Fetch Last 45 Days Videos & Lives"):
             if not api_key:
-                st.error("API Key missing in Secrets!")
+                st.error("API Key missing in Streamlit Secrets!")
             elif not channel_input.strip():
                 st.error("Please enter a valid channel handle or playlist URL!")
             else:
@@ -405,8 +401,7 @@ else:
                 if not target_playlist_id:
                     st.error("Could not resolve channel uploads or playlist ID!")
                 else:
-                    with st.spinner("Scanning YouTube Data API (Filtering Shorts & >45 Days items)..."):
-                        # Clear old state completely
+                    with st.spinner("Fetching YouTube metadata from Google API..."):
                         for k in list(st.session_state.keys()):
                             if k.startswith("chk_"):
                                 del st.session_state[k]
@@ -417,9 +412,8 @@ else:
             st.markdown("---")
             st.subheader("Step 2: Select Videos for Audit")
             videos = st.session_state["fetched_videos"]
-            st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items to include:")
+            st.info(f"Found **{len(videos)}** long-form videos/lives from last 45 days. Select items to include:")
             
-            # Form to prevent auto-refreshing state mid-selection
             with st.form("video_selection_form"):
                 selected_indices = []
                 for idx, vid in enumerate(videos):
@@ -436,11 +430,11 @@ else:
                     if chk:
                         selected_indices.append(idx)
 
-                confirm_submit = st.form_submit_button("✅ Confirm Selected Videos & Build Audit Sheet")
+                confirm_submit = st.form_submit_button("✅ Build Audit Sheet for Selected Videos Only")
 
             if confirm_submit:
                 if not selected_indices:
-                    st.warning("⚠️ Pehle kam se kam ek video select karo!")
+                    st.warning("⚠️ Please select at least one video checkbox above!")
                     st.session_state.pop("processed_df", None)
                 else:
                     rows = []
@@ -455,12 +449,12 @@ else:
                             "_raw_sec": sv.get("raw_seconds", 0)
                         })
                     st.session_state["processed_df"] = pd.DataFrame(rows)
-                    st.success(f"Success! {len(selected_indices)} videos loaded into Step 3.")
+                    st.success(f"Successfully loaded {len(selected_indices)} videos into Step 3.")
 
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
-        st.subheader("Step 3: Verification & Co-Educator Hours Split")
+        st.subheader("Step 3: Verification & Hours Split")
         
         df_to_edit = st.session_state["processed_df"].copy()
 
@@ -493,8 +487,8 @@ else:
         total_vids = len(edited_df)
         total_hhmmss = seconds_to_hhmmss(tot_seconds)
         
-        col1.metric("Selected Videos / Lives", f"{total_vids}")
-        col2.metric("Total Reconciled Time", f"{total_hhmmss}")
+        col1.metric("Selected Content Items", f"{total_vids}")
+        col2.metric("Total Reconciled Hours", f"{total_hhmmss}")
         
         final_df = edited_df[["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
         total_row = pd.DataFrame([{
@@ -507,8 +501,8 @@ else:
         
         csv_data = export_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            "📥 Export Standard CSV Audit Sheet", 
+            "📥 Export Verified Audit CSV", 
             data=csv_data, 
-            file_name=f"YT_Audit_HHMMSS_{st.session_state['user_id']}.csv", 
+            file_name=f"Unacademy_YT_Audit_{st.session_state['user_id']}.csv", 
             mime="text/csv"
         )
