@@ -6,141 +6,155 @@ from googleapiclient.discovery import build
 import isodate
 
 # ---------------------------------------------------------
-# PAGE CONFIGURATION & UNACADEMY SAAS THEME
+# PAGE CONFIGURATION & RECONCILEX AI THEME
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Unacademy Ops | Reconcile Hub",
-    page_icon="🟢",
+    page_title="ReconcileX AI | Smart Content Audit Platform",
+    page_icon="⚡",
     layout="wide"
 )
 
-# Unacademy Signature Corporate Theme
+# Custom Styling for ReconcileX AI Hero & Dashboard UI
 st.markdown("""
     <style>
-    /* Global Background & Font */
-    .stApp, [data-testid="stSidebar"] {
-        background: #0C1017 !important;
-        color: #F8FAFC !important;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Global Theme */
+    .stApp {
+        background: #F8FAFC !important;
+        color: #0F172A !important;
+        font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     }
-    
+
     header {visibility: hidden;}
     footer {visibility: hidden;}
 
-    /* Unacademy Primary Typography */
+    /* Typography Overrides */
     h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
-        color: #F8FAFC !important;
+        color: #0F172A !important;
     }
 
-    /* Brand Header - Unacademy Green Accent */
-    .brand-header {
-        font-size: 2.5rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #08BD80 0%, #00E5FF 100%);
+    /* Hero Headline Styling */
+    .hero-title {
+        font-size: 3.2rem;
+        font-weight: 900;
+        color: #0F172A !important;
+        line-height: 1.15;
+        letter-spacing: -1.5px;
+        margin-bottom: 12px;
+    }
+
+    .hero-title span {
+        background: linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        letter-spacing: -1px;
-        margin-bottom: 4px;
     }
 
-    .brand-subheader {
-        color: #94A3B8 !important;
-        font-size: 1rem;
-        font-weight: 400;
+    .hero-subtitle {
+        color: #475569 !important;
+        font-size: 1.15rem;
+        font-weight: 500;
         margin-bottom: 25px;
     }
 
-    /* Inputs & Textareas */
-    .stTextInput input, .stTextArea textarea {
-        background-color: #161D2A !important;
-        color: #FFFFFF !important;
-        border: 1px solid #283346 !important;
-        border-radius: 10px !important;
-        padding: 12px !important;
-        font-size: 0.95rem;
+    .highlight-badge {
+        color: #2563EB !important;
+        font-weight: 800;
     }
 
-    .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #08BD80 !important;
-        box-shadow: 0 0 12px rgba(8, 189, 128, 0.25) !important;
+    /* Input Box Styling */
+    .stTextInput input {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
+        border: 2px solid #E2E8F0 !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        font-size: 1rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }
 
-    /* Unacademy Green Buttons */
+    .stTextInput input:focus {
+        border-color: #2563EB !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+    }
+
+    /* Primary Dark Slate / Indigo Action Button */
     .stButton>button {
-        background: #08BD80 !important;
-        color: #0C1017 !important;
-        border-radius: 10px !important;
-        font-weight: 800 !important;
+        background: #1E293B !important;
+        color: #FFFFFF !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
         border: none !important;
-        padding: 0.7rem 1.5rem !important;
-        box-shadow: 0 4px 15px rgba(8, 189, 128, 0.3) !important;
+        padding: 0.85rem 1.8rem !important;
+        font-size: 1.05rem !important;
+        box-shadow: 0 10px 20px -5px rgba(30, 41, 59, 0.3) !important;
         transition: all 0.2s ease-in-out !important;
         width: 100%;
-        letter-spacing: 0.5px;
     }
 
     .stButton>button:hover {
-        background: #07A36F !important;
+        background: #0F172A !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(8, 189, 128, 0.5) !important;
+        box-shadow: 0 14px 24px -5px rgba(15, 23, 42, 0.4) !important;
     }
 
-    /* Sidebar Styling & Badge */
-    [data-testid="stSidebar"] {
-        border-right: 1px solid #1E293B !important;
-        padding-top: 2rem;
+    /* Hero Right Section Custom Graphics */
+    .illustration-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
     }
 
-    .sidebar-creator-card {
-        background: #161D2A;
-        border: 1px solid #283346;
-        border-left: 4px solid #08BD80;
-        padding: 14px;
-        border-radius: 10px;
-        margin-top: 15px;
-        margin-bottom: 20px;
+    .avatar-circle-main {
+        width: 220px;
+        height: 220px;
+        background: linear-gradient(135deg, #BAE6FD 0%, #38BDF8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        box-shadow: 0 20px 40px rgba(56, 189, 248, 0.25);
     }
 
-    .sidebar-creator-card .label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #64748B;
-        font-weight: 700;
-        margin-bottom: 2px;
+    .avatar-circle-secondary {
+        width: 160px;
+        height: 160px;
+        background: linear-gradient(135deg, #FEF08A 0%, #FACC15 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        box-shadow: 0 15px 30px rgba(250, 204, 21, 0.25);
     }
 
-    .sidebar-creator-card .creator-name {
-        font-size: 0.9rem;
+    .avatar-circle-tertiary {
+        width: 170px;
+        height: 170px;
+        background: linear-gradient(135deg, #DDD6FE 0%, #A855F7 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 65px;
+        box-shadow: 0 15px 30px rgba(168, 85, 247, 0.25);
+    }
+
+    .floating-badge-1 {
+        background: #FFFFFF;
+        color: #2563EB;
         font-weight: 800;
-        color: #08BD80;
-        text-decoration: none;
-    }
-    
-    .sidebar-creator-card .creator-name:hover {
-        color: #00E5FF;
-        text-decoration: underline;
+        padding: 8px 16px;
+        border-radius: 30px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        border: 1px solid #E2E8F0;
+        font-size: 0.9rem;
     }
 
-    /* Metric Cards */
     div[data-testid="stMetricValue"] {
-        font-size: 32px !important;
-        color: #08BD80 !important;
-        font-weight: 800 !important;
-    }
-
-    div[data-testid="stMetricLabel"] {
-        color: #94A3B8 !important;
-        font-size: 0.85rem !important;
-        font-weight: 600 !important;
-    }
-
-    /* Radio Tabs */
-    div[role="radiogroup"] {
-        background: #161D2A;
-        padding: 6px;
-        border-radius: 10px;
-        border: 1px solid #283346;
+        color: #2563EB !important;
+        font-weight: 900 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -148,10 +162,11 @@ st.markdown("""
 # ---------------------------------------------------------
 # ACCESS CONTROL SYSTEM
 # ---------------------------------------------------------
-ALLOWED_FACULTY = {
-    "UNAC_58291": "Pass@123",
-    "UNAC_10021": "Educator@2026",
-    "ADMIN_OPS": "UnacademyOps#1"
+ALLOWED_USERS = {
+    "9999999999": "Pass@123",
+    "FACULTY_101": "Pass@123",
+    "FACULTY_202": "Educator@2026",
+    "ADMIN_OPS": "OpsPortal#1"
 }
 
 if "logged_in" not in st.session_state:
@@ -260,7 +275,7 @@ def fetch_videos_last_45_days(api_key, playlist_id):
                     vid_id = item["id"]
                     total_sec = durations_map.get(vid_id, 0)
                     
-                    if total_sec >= 60: # Exclude Shorts
+                    if total_sec >= 60:
                         item["duration_hhmmss"] = seconds_to_hhmmss(total_sec)
                         item["raw_seconds"] = total_sec
                         all_videos.append(item)
@@ -275,54 +290,87 @@ def fetch_videos_last_45_days(api_key, playlist_id):
     return all_videos
 
 # ---------------------------------------------------------
-# SCREEN 1: LOGIN PORTAL
+# SCREEN 1: RECONCILEX AI LANDING HERO PAGE
 # ---------------------------------------------------------
 if not st.session_state["logged_in"]:
-    st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
-    st.markdown("<h1 style='text-align: center;' class='brand-header'>🟢 Unacademy PulseOps</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;' class='brand-subheader'>Educator YouTube Audit & Reconciliation Suite</p>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 1.2, 1])
-    with col2:
-        with st.form("login_form"):
-            st.markdown("<h3 style='text-align: center; font-weight: 700;'>🔐 Operations Login</h3>", unsafe_allow_html=True)
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            user_id = st.text_input("Educator / Admin ID", placeholder="e.g. UNAC_58291")
-            password = st.text_input("Password", type="password", placeholder="••••••••")
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            submit = st.form_submit_button("Sign In to Portal →")
+    col_left, col_right = st.columns([1.1, 0.9], gap="large")
+
+    with col_left:
+        st.markdown("""
+            <div class="hero-title">
+                Automate your content audit with <span>ReconcileX AI</span>
+            </div>
+            <p class="hero-subtitle">
+                Over <span class="highlight-badge">10 Crore+</span> watch hours processed with intelligent multi-host reconciliation.
+            </p>
+        """, unsafe_allow_html=True)
+
+        with st.form("hero_login_form"):
+            user_id = st.text_input(
+                "Mobile Number or Access ID", 
+                placeholder="🇮🇳  +91  Enter your mobile or ID"
+            )
+            password = st.text_input(
+                "Security Passkey", 
+                type="password", 
+                placeholder="Enter access key"
+            )
             
-            if submit:
-                if user_id in ALLOWED_FACULTY and ALLOWED_FACULTY[user_id] == password:
+            st.markdown("<p style='font-size: 0.82rem; color: #64748B; margin-top: -5px;'>Instant authentication for operations & content leaders</p>", unsafe_allow_html=True)
+            
+            submit_btn = st.form_submit_button("Access Portal →")
+
+            if submit_btn:
+                if user_id in ALLOWED_USERS and ALLOWED_USERS[user_id] == password:
                     st.session_state["logged_in"] = True
                     st.session_state["user_id"] = user_id
                     st.rerun()
                 else:
-                    st.error("❌ Invalid Credentials. Contact Unacademy Ops Team.")
+                    st.error("❌ Verification Failed: Invalid ID or Key.")
 
-        st.markdown("""
-            <div style="text-align: center; margin-top: 20px;">
-                <span style="color: #64748B; font-size: 0.85rem;">Engineered by</span> 
-                <a href="https://instagram.com/deepak_patil_7979" target="_blank" style="color: #08BD80; font-weight: 700; text-decoration: none;">@deepak_patil_7979</a>
-            </div>
-        """, unsafe_allow_html=True)
+    with col_right:
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+                <div class="illustration-container">
+                    <div class="avatar-circle-main">👨‍🏫</div>
+                </div>
+                <div style="text-align: center; margin-top: -10px;">
+                    <span class="floating-badge-1">⚡ Automated Audits</span>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+            
+            st.markdown("""
+                <div class="illustration-container">
+                    <div class="avatar-circle-secondary">👩‍💻</div>
+                </div>
+                <div style="text-align: center; margin-top: -10px;">
+                    <span class="floating-badge-1">📊 Multi-Host Split</span>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with c2:
+            st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+            st.markdown("""
+                <div class="illustration-container">
+                    <div class="avatar-circle-tertiary">🎓</div>
+                </div>
+                <div style="text-align: center; margin-top: -10px;">
+                    <span class="floating-badge-1">🌟 100% Verified Metadata</span>
+                </div>
+            """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# SCREEN 2: MAIN DASHBOARD
+# SCREEN 2: MAIN DASHBOARD INTERFACE
 # ---------------------------------------------------------
 else:
     # Sidebar
-    st.sidebar.markdown("## 🟢 Unacademy Ops")
-    st.sidebar.markdown(f"👤 Active ID: **{st.session_state['user_id']}**")
-    
-    st.sidebar.markdown("""
-        <div class="sidebar-creator-card">
-            <div class="label">System Architect</div>
-            <a class="creator-name" href="https://instagram.com/deepak_patil_7979" target="_blank">
-                ⚡ Engineered by @deepak_patil_7979
-            </a>
-        </div>
-    """, unsafe_allow_html=True)
+    st.sidebar.markdown("## ⚡ ReconcileX AI")
+    st.sidebar.markdown(f"👤 Active Operator: **{st.session_state['user_id']}**")
 
     if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
@@ -331,11 +379,11 @@ else:
         st.session_state.pop("fetched_videos", None)
         st.rerun()
 
-    # Header
-    st.markdown("<h1 class='brand-header'>📹 YouTube Audit & Reconciliation</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='brand-subheader'>Fetch YouTube sessions, calculate co-educator splits, and generate audit-ready reports.</p>", unsafe_allow_html=True)
+    # Main Header
+    st.markdown("<h1 style='font-size: 2.2rem; font-weight: 800; color: #0F172A;'>📹 ReconcileX Content Engine</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #64748B; font-size: 1rem; margin-top: -10px;'>Fetch channel content, adjust co-educator live hours, and generate audit sheets.</p>", unsafe_allow_html=True)
 
-    mode = st.radio("Select Audit Mode:", [
+    mode = st.radio("Select Audit Workflow:", [
         "📋 Mode A: Direct Video Links", 
         "📺 Mode B: Channel / Playlist (Last 45 Days)"
     ], horizontal=True)
@@ -344,12 +392,12 @@ else:
 
     # MODE A
     if "Mode A" in mode:
-        st.subheader("Step 1: Input Direct YouTube Links")
+        st.subheader("Step 1: Input Direct Video Links")
         raw_links_text = st.text_area("Paste video/live links below (one per line):", height=140, placeholder="https://www.youtube.com/watch?v=...\nhttps://youtu.be/...")
         
-        if st.button("🚀 Process Direct Links"):
+        if st.button("🚀 Process Links"):
             if not api_key:
-                st.error("API Key missing in Streamlit Secrets!")
+                st.error("API Key missing in Secrets!")
             elif raw_links_text.strip():
                 links = [l.strip() for l in raw_links_text.split("\n") if l.strip()]
                 v_ids = [extract_video_id(l) for l in links if extract_video_id(l)]
@@ -369,7 +417,7 @@ else:
                     hhmmss_str = seconds_to_hhmmss(total_sec)
                     
                     rows.append({
-                        "Educator ID": st.session_state["user_id"],
+                        "User ID": st.session_state["user_id"],
                         "Video ID": vid,
                         "Cleaned YT Link": f"https://www.youtube.com/watch?v={vid}",
                         "Duration (HH:MM:SS)": hhmmss_str,
@@ -383,12 +431,12 @@ else:
         st.subheader("Step 1: Ingest Channel Handle or Playlist URL")
         channel_input = st.text_input(
             "Enter YouTube Channel Handle or Playlist URL:",
-            placeholder="e.g. https://www.youtube.com/@UnacademyNEET"
+            placeholder="e.g. https://www.youtube.com/@ChannelHandle"
         )
         
         if st.button("🔍 Fetch Last 45 Days Videos & Lives"):
             if not api_key:
-                st.error("API Key missing in Streamlit Secrets!")
+                st.error("API Key missing in Secrets!")
             elif not channel_input.strip():
                 st.error("Please enter a valid channel handle or playlist URL!")
             else:
@@ -401,7 +449,7 @@ else:
                 if not target_playlist_id:
                     st.error("Could not resolve channel uploads or playlist ID!")
                 else:
-                    with st.spinner("Fetching YouTube metadata from Google API..."):
+                    with st.spinner("Processing ReconcileX API Stream..."):
                         for k in list(st.session_state.keys()):
                             if k.startswith("chk_"):
                                 del st.session_state[k]
@@ -412,7 +460,7 @@ else:
             st.markdown("---")
             st.subheader("Step 2: Select Videos for Audit")
             videos = st.session_state["fetched_videos"]
-            st.info(f"Found **{len(videos)}** long-form videos/lives from last 45 days. Select items to include:")
+            st.info(f"Found **{len(videos)}** long-form items from last 45 days. Select items to include:")
             
             with st.form("video_selection_form"):
                 selected_indices = []
@@ -441,7 +489,7 @@ else:
                     for s_idx in selected_indices:
                         sv = videos[s_idx]
                         rows.append({
-                            "Educator ID": st.session_state["user_id"],
+                            "User ID": st.session_state["user_id"],
                             "Video ID": sv.get('id'),
                             "Cleaned YT Link": f"https://www.youtube.com/watch?v={sv.get('id')}",
                             "Duration (HH:MM:SS)": sv.get("duration_hhmmss", "00:00:00"),
@@ -449,19 +497,19 @@ else:
                             "_raw_sec": sv.get("raw_seconds", 0)
                         })
                     st.session_state["processed_df"] = pd.DataFrame(rows)
-                    st.success(f"Successfully loaded {len(selected_indices)} videos into Step 3.")
+                    st.success(f"Loaded {len(selected_indices)} videos into Step 3.")
 
     # TABLE & EXPORT
     if "processed_df" in st.session_state and isinstance(st.session_state["processed_df"], pd.DataFrame) and not st.session_state["processed_df"].empty:
         st.markdown("---")
-        st.subheader("Step 3: Verification & Hours Split")
+        st.subheader("Step 3: Verification & Co-Host Hours Split")
         
         df_to_edit = st.session_state["processed_df"].copy()
 
         edited_df = st.data_editor(
-            df_to_edit[["Educator ID", "Video ID", "Cleaned YT Link", "Duration (HH:MM:SS)", "Teachers Count"]],
+            df_to_edit[["User ID", "Video ID", "Cleaned YT Link", "Duration (HH:MM:SS)", "Teachers Count"]],
             column_config={
-                "Educator ID": st.column_config.TextColumn("Educator ID", disabled=True),
+                "User ID": st.column_config.TextColumn("User ID", disabled=True),
                 "Video ID": st.column_config.TextColumn("Video ID", disabled=True),
                 "Cleaned YT Link": st.column_config.LinkColumn("YT Link", disabled=True),
                 "Duration (HH:MM:SS)": st.column_config.TextColumn("Duration (HH:MM:SS)", disabled=True),
@@ -488,11 +536,11 @@ else:
         total_hhmmss = seconds_to_hhmmss(tot_seconds)
         
         col1.metric("Selected Content Items", f"{total_vids}")
-        col2.metric("Total Reconciled Hours", f"{total_hhmmss}")
+        col2.metric("Total Reconciled Time", f"{total_hhmmss}")
         
-        final_df = edited_df[["Educator ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
+        final_df = edited_df[["User ID", "Video ID", "Cleaned YT Link", "Allocated Duration (HH:MM:SS)"]]
         total_row = pd.DataFrame([{
-            "Educator ID": "TOTAL", 
+            "User ID": "TOTAL", 
             "Video ID": "-", 
             "Cleaned YT Link": "-", 
             "Allocated Duration (HH:MM:SS)": total_hhmmss
@@ -501,8 +549,8 @@ else:
         
         csv_data = export_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            "📥 Export Verified Audit CSV", 
+            "📥 Export ReconcileX Verified Audit CSV", 
             data=csv_data, 
-            file_name=f"Unacademy_YT_Audit_{st.session_state['user_id']}.csv", 
+            file_name=f"ReconcileX_Audit_{st.session_state['user_id']}.csv", 
             mime="text/csv"
         )
